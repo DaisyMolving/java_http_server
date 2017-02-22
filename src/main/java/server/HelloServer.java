@@ -29,6 +29,10 @@ public class HelloServer {
                 System.out.println("get request");
                 if (path.equals("/")) {
                     output.println(protocolVersion + " " + "200 OK");
+                } else if (path.equals("/file1")) {
+                    output.println(protocolVersion + " " + "200 OK");
+                } else if (path.equals("/text-file.txt")) {
+                    output.println(protocolVersion + " " + "200 OK");
                 } else if (path.equals("/redirect")) {
                     output.println(protocolVersion + " " + "302 Found");
                     output.println("Location: http://localhost:5000/");
@@ -43,7 +47,7 @@ public class HelloServer {
                 }
             }
 
-            if (methodVerb.equals("OPTIONS")) {
+            else if (methodVerb.equals("OPTIONS")) {
                 System.out.println("options request");
                 if (path.equals("/method_options")) {
                     output.println(protocolVersion + " " + "200 OK");
@@ -56,23 +60,36 @@ public class HelloServer {
                 }
             }
 
-            if (methodVerb.equals("POST")) {
+            else if (methodVerb.equals("POST")) {
                 System.out.println("post request");
-                output.println(protocolVersion + " " + "200 OK");
+                if (path.equals("/form")) {
+                    output.println(protocolVersion + " " + "200 OK");
+                } else {
+                    output.println(protocolVersion + " " + "405 Method Not Allowed");
+                }
             }
 
-            if (methodVerb.equals("PUT")) {
+            else if (methodVerb.equals("PUT")) {
                 System.out.println("put request");
-                output.println(protocolVersion + " " + "200 OK");
+                if (path.equals("/form")) {
+                    output.println(protocolVersion + " " + "200 OK");
+                } else {
+                    output.println(protocolVersion + " " + "405 Method Not Allowed");
+                }
             }
 
-            if (methodVerb.equals("HEAD")) {
+            else if (methodVerb.equals("HEAD")) {
                 System.out.println("head request");
                 if (path.equals("/")) {
                     output.println(protocolVersion + " " + "200 OK");
                 } else {
                     output.println(protocolVersion + " " + "404 Not Found");
                 }
+            }
+
+            else {
+                System.out.println("bogus request");
+                output.println(protocolVersion + " " + "405 Method Not Allowed");
             }
 
             input.close();
