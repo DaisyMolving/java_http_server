@@ -28,7 +28,11 @@ public class HelloServer {
 
             if (methodVerb.equals("GET")) {
                 System.out.println("get request");
-                output.println(protocolVersion + " " + "200 OK");
+                if (path.equals("/")) {
+                    output.println(protocolVersion + " " + "200 OK");
+                } else {
+                    output.println(protocolVersion + " " + "404 Not Found");
+                }
             }
 
             if (methodVerb.equals("POST")) {
