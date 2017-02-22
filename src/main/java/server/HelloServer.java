@@ -19,7 +19,6 @@ public class HelloServer {
             BufferedReader input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
             PrintStream output = new PrintStream(clientConnection.getOutputStream());
             String request = input.readLine();
-            System.out.println(request);
 
             HashMap<String, String> requestDefinition = define(request);
             String methodVerb = requestDefinition.get("methodVerb");
@@ -41,13 +40,31 @@ public class HelloServer {
                 }
             }
 
+            if (methodVerb.equals("OPTIONS")) {
+                System.out.println("options request");
+                if (path.equals("/method_options")) {
+                    output.println(protocolVersion + " " + "200 OK");
+                    output.println("Allow: GET,HEAD,POST,OPTIONS,PUT");
+                } else if (path.equals("/method_options2")) {
+                    output.println(protocolVersion + " " + "200 OK");
+                    output.println("Allow: GET,OPTIONS");
+                } else {
+                    output.println(protocolVersion + " " + "200 OK");
+                }
+            }
+
             if (methodVerb.equals("POST")) {
-                System.out.println("get request");
+                System.out.println("post request");
                 output.println(protocolVersion + " " + "200 OK");
             }
 
             if (methodVerb.equals("PUT")) {
-                System.out.println("get request");
+                System.out.println("put request");
+                output.println(protocolVersion + " " + "200 OK");
+            }
+
+            if (methodVerb.equals("HEAD")) {
+                System.out.println("head request");
                 output.println(protocolVersion + " " + "200 OK");
             }
 
