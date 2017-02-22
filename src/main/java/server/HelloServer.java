@@ -65,7 +65,11 @@ public class HelloServer {
 
             if (methodVerb.equals("HEAD")) {
                 System.out.println("head request");
-                output.println(protocolVersion + " " + "200 OK");
+                if (path.equals("/")) {
+                    output.println(protocolVersion + " " + "200 OK");
+                } else {
+                    output.println(protocolVersion + " " + "404 Not Found");
+                }
             }
 
             input.close();
