@@ -29,6 +29,9 @@ public class HelloServer {
                 System.out.println("get request");
                 if (path.equals("/")) {
                     output.println(protocolVersion + " " + "200 OK");
+                } else if (path.equals("/redirect")) {
+                    output.println(protocolVersion + " " + "302 Found");
+                    output.println("Location: http://localhost:5000/");
                 } else if (path.equals("/tea")) {
                     output.println(protocolVersion + " " + "200 OK");
                 } else if (path.equals("/coffee")) {
