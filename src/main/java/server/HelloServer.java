@@ -31,6 +31,12 @@ public class HelloServer {
                 output.println(protocolVersion + " " + "200 OK");
             }
 
+            if (methodVerb.equals("POST")) {
+                System.out.println("get request");
+                output.println(protocolVersion + " " + "200 OK");
+            }
+
+
             input.close();
             output.close();
             clientConnection.close();
