@@ -1,0 +1,21 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "org.gradle.sample.Main"
+
+dependencies {
+    compile 'junit:junit:4.12'
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+  manifest {
+    attributes(
+      'Main-Class': 'server.Main'
+    )
+  }
+}
