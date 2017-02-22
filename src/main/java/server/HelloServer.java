@@ -30,6 +30,12 @@ public class HelloServer {
                 System.out.println("get request");
                 if (path.equals("/")) {
                     output.println(protocolVersion + " " + "200 OK");
+                } else if (path.equals("/tea")) {
+                    output.println(protocolVersion + " " + "200 OK");
+                } else if (path.equals("/coffee")) {
+                    output.println(protocolVersion + " " + "418 I'm a teapot");
+                    output.println("");
+                    output.println("I'm a teapot");
                 } else {
                     output.println(protocolVersion + " " + "404 Not Found");
                 }
