@@ -22,7 +22,9 @@ public class HelloServer {
 
             Response currentResponse = new Response(currentRequest);
 
-            output.println(currentResponse.generate());
+            for (String responseLine : currentResponse.generate()) {
+                output.println(responseLine);
+            }
 
             input.close();
             output.close();
