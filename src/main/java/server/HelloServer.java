@@ -18,11 +18,11 @@ public class HelloServer {
             BufferedReader input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
             PrintStream output = new PrintStream(clientConnection.getOutputStream());
 
-            Request currentRequest = new Request(input.readLine());
+            Request currentRequest = RequestFilter.createByType(input.readLine());
 
-            Response currentResponse = new Response(currentRequest);
+            Response currentResponse = currentRequest.createResponse();
 
-            for (String responseLine : currentResponse.generate()) {
+            for (String responseLine : currentResponse.generateContent()) {
                 output.println(responseLine);
             }
 

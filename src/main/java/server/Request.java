@@ -1,29 +1,16 @@
 package server;
 
+public interface Request {
 
-public class Request {
+  public String methodVerb = new String();
+  public String path = new String();
+  public String protocolVersion = new String();
 
-    private String methodVerb;
-    private String path;
-    private String protocolVersion;
+  public String getMethodVerb();
 
-    public Request(String requestInput) {
-        String[] splitRequest = requestInput.split("\\s+");
-        this.methodVerb = splitRequest[0];
-        this.path = splitRequest[1];
-        this.protocolVersion = splitRequest[2];
-    }
+  public String getPath();
 
-    public String getMethodVerb() {
-        return methodVerb;
-    }
+  public String getProtocolVersion();
 
-    public String getPath() {
-        return path;
-    }
-
-    public String getProtocolVersion() {
-        return protocolVersion;
-    }
-
+  public Response createResponse();
 }
