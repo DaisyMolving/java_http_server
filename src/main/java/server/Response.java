@@ -19,29 +19,19 @@ public class Response {
         if (currentRequest.getMethodVerb().equals("GET")) {
             System.out.println("get request");
             if (currentRequest.getPath().equals("/")) {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "200 OK", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return successResponse();
+            } else if (currentRequest.getPath().equals("/file1")) {
+                return successResponse();
             } else if (currentRequest.getPath().equals("/text-file.txt")) {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "200 OK", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return successResponse();
             } else if (currentRequest.getPath().equals("/redirect")) {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "302 Found", "http://localhost:5000/", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return redirectResponse();
             } else if (currentRequest.getPath().equals("/tea")) {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "200 OK", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return successResponse();
             } else if (currentRequest.getPath().equals("/coffee")) {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "418 I'm a teapot", "", ""));
-                responseContent.addAll(createBody("I'm a teapot"));
-                return responseContent;
+                return teapotResponse();
             } else {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "404 Not Found", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return notFoundResponse();
             }
         }
 
@@ -56,56 +46,70 @@ public class Response {
                 responseContent.addAll(createBody(""));
                 return responseContent;
             } else {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "200 OK", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return successResponse();
             }
         }
 
         else if (currentRequest.getMethodVerb().equals("POST")) {
             System.out.println("post request");
             if (currentRequest.getPath().equals("/form")) {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "200 OK", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return successResponse();
             } else {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "405 Method Not Allowed", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return methodNotAllowedResponse();
             }
         }
 
         else if (currentRequest.getMethodVerb().equals("PUT")) {
             System.out.println("put request");
             if (currentRequest.getPath().equals("/form")) {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "200 OK", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return successResponse();
             } else {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "405 Method Not Allowed", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return methodNotAllowedResponse();
             }
         }
 
         else if (currentRequest.getMethodVerb().equals("HEAD")) {
             System.out.println("head request");
             if (currentRequest.getPath().equals("/")) {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "200 OK", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return successResponse();
             } else {
-                responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "404 Not Found", "", ""));
-                responseContent.addAll(createBody(""));
-                return responseContent;
+                return notFoundResponse();
             }
         }
+        return methodNotAllowedResponse();
+    }
+
+    private List<String> successResponse() {
+        responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "200 OK", "", ""));
+        responseContent.addAll(createBody(""));
+        return responseContent;
+    }
+
+    private List<String> methodNotAllowedResponse() {
         responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "405 Method Not Allowed", "", ""));
         responseContent.addAll(createBody(""));
         return responseContent;
     }
 
-    public List<String> createHead(String startLine, String location, String allow) {
+    private List<String> redirectResponse() {
+        responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "302 Found", "http://localhost:5000/", ""));
+        responseContent.addAll(createBody(""));
+        return responseContent;
+    }
+
+    private List<String> teapotResponse() {
+        responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "418 I'm a teapot", "", ""));
+        responseContent.addAll(createBody("I'm a teapot"));
+        return responseContent;
+    }
+
+    private List<String> notFoundResponse() {
+        responseContent.addAll(createHead(currentRequest.getProtocolVersion() + " " + "404 Not Found", "", ""));
+        responseContent.addAll(createBody(""));
+        return responseContent;
+    }
+
+    private List<String> createHead(String startLine, String location, String allow) {
         return Arrays.asList(
                 startLine,
                 "Location: " + location,
@@ -114,7 +118,7 @@ public class Response {
         );
     }
 
-    public List<String> createBody(String bodyContent) {
+    private List<String> createBody(String bodyContent) {
         return Arrays.asList(bodyContent);
     }
 
