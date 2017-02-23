@@ -29,8 +29,6 @@ public class HelloServer {
                 System.out.println("get request");
                 if (path.equals("/")) {
                     output.println(protocolVersion + " " + "200 OK");
-                } else if (path.equals("/file1")) {
-                    output.println(protocolVersion + " " + "200 OK");
                 } else if (path.equals("/text-file.txt")) {
                     output.println(protocolVersion + " " + "200 OK");
                 } else if (path.equals("/redirect")) {
