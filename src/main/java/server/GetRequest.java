@@ -4,16 +4,13 @@ import java.util.HashMap;
 
 public class GetRequest implements Request {
 
-    private String methodVerb;
     private String path;
     private String protocolVersion;
     private final HashMap<String, Response> pathToResponse = new HashMap<>();
 
-    public GetRequest(String requestInput) {
-        String[] splitRequest = requestInput.split("\\s+");
-        this.methodVerb = splitRequest[0];
-        this.path = splitRequest[1];
-        this.protocolVersion = splitRequest[2];
+    public GetRequest(String path, String protocolVersion) {
+        this.path = path;
+        this.protocolVersion = protocolVersion;
 
         pathToResponse.put("/", new SuccessResponse(protocolVersion));
         pathToResponse.put("/file1", new SuccessResponse(protocolVersion));
@@ -21,10 +18,6 @@ public class GetRequest implements Request {
         pathToResponse.put("/redirect", new RedirectResponse(protocolVersion));
         pathToResponse.put("/tea", new SuccessResponse(protocolVersion));
         pathToResponse.put("/coffee", new TeapotResponse(protocolVersion));
-    }
-
-    public String getMethodVerb() {
-        return methodVerb;
     }
 
     public String getPath() {

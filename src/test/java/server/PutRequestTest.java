@@ -9,14 +9,14 @@ public class PutRequestTest {
     @Test
     public void createsAppropriateResponseFromPathForSimplePut() {
         String requestInput = "PUT /form HTTP/1.1";
-        Request request = new PutRequest(requestInput);
+        Request request = new PutRequest("/form", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof SuccessResponse);
     }
 
     @Test
     public void createsAppropriateResponseFromPathForMethodNotAllowed() {
         String requestInput = "PUT / HTTP/1.1";
-        Request request = new PutRequest(requestInput);
+        Request request = new PutRequest("/", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof MethodNotAllowedResponse);
     }
 }

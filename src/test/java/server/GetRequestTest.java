@@ -9,43 +9,37 @@ public class GetRequestTest {
     @Test
     public void createsAppropriateResponseFromPathForSimpleGet() {
         String requestInput = "GET / HTTP/1.1";
-        Request request = new GetRequest(requestInput);
+        Request request = new GetRequest("/", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof SuccessResponse);
     }
 
     @Test
     public void createsAppropriateResponseFromPathToValidFiles() {
-        String teaRequestInput = "GET /tea HTTP/1.1";
-        Request teaRequest = new GetRequest(teaRequestInput);
+        Request teaRequest = new GetRequest("/tea", "HTTP/1.1");
         assertTrue(teaRequest.createResponse() instanceof SuccessResponse);
 
-        String fileRequestInput = "GET /file1 HTTP/1.1";
-        Request fileRequest = new GetRequest(fileRequestInput);
+        Request fileRequest = new GetRequest("/file1", "HTTP/1.1");
         assertTrue(fileRequest.createResponse() instanceof SuccessResponse);
 
-        String textFileRequestInput = "GET /text-file.txt HTTP/1.1";
-        Request textFileRequest = new GetRequest(textFileRequestInput);
+        Request textFileRequest = new GetRequest("/text-file.txt", "HTTP/1.1");
         assertTrue(textFileRequest.createResponse() instanceof SuccessResponse);
     }
 
     @Test
     public void createsAppropriateResponseFromPathForRedirect() {
-        String requestInput = "GET /redirect HTTP/1.1";
-        Request request = new GetRequest(requestInput);
+        Request request = new GetRequest("/redirect", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof RedirectResponse);
     }
 
     @Test
     public void createsAppropriateResponseFromPathForTeapotFourEighteen() {
-        String requestInput = "GET /coffee HTTP/1.1";
-        Request request = new GetRequest(requestInput);
+        Request request = new GetRequest("/coffee", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof TeapotResponse);
     }
 
     @Test
     public void createsAppropriateResponseFromPathForNotFound() {
-        String requestInput = "GET /bogus HTTP/1.1";
-        Request request = new GetRequest(requestInput);
+        Request request = new GetRequest("/bogus", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof NotFoundResponse);
     }
 }

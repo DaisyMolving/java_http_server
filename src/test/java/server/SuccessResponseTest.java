@@ -11,7 +11,7 @@ public class SuccessResponseTest {
 
     @Test
     public void createsAppropriateResponseContent() {
-        Request request = new GetRequest("GET / HTTP/1.1");
+        Request request = new GetRequest("/", "HTTP/1.1");
         Response response = new SuccessResponse(request.getProtocolVersion());
         List<String> appropriateResponseElements = Arrays.asList("HTTP/1.1 200 OK", "Location: ", "Allow: ", "\n", "");
         assertEquals(appropriateResponseElements, response.generateContent());

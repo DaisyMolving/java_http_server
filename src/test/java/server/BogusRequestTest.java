@@ -8,8 +8,7 @@ public class BogusRequestTest {
 
     @Test
     public void createsAppropriateResponseForBogusRequest() {
-        String requestInput = "WJKES / HTTP/1.1";
-        Request request = new BogusRequest(requestInput);
+        Request request = new BogusRequest("/", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof MethodNotAllowedResponse);
     }
 }

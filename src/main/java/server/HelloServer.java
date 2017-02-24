@@ -18,7 +18,7 @@ public class HelloServer {
             BufferedReader input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
             PrintStream output = new PrintStream(clientConnection.getOutputStream());
 
-            Request currentRequest = RequestFilter.createByType(input.readLine());
+            Request currentRequest = new RequestFilter(input.readLine()).createByType();
 
             Response currentResponse = currentRequest.createResponse();
 
