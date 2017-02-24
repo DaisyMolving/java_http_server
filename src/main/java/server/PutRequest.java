@@ -29,6 +29,6 @@ public class PutRequest implements Request {
         if (path.equals("/form")) {
             return new SuccessResponse(protocolVersion);
         }
-        return new NotFoundResponse(protocolVersion);
+        return new MethodNotAllowedResponse(protocolVersion);
     }
 }
