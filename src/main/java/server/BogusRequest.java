@@ -13,15 +13,15 @@ public class BogusRequest implements Request{
         this.protocolVersion = splitRequest[2];
     }
     public String getMethodVerb() {
-        return null;
+        return methodVerb;
     }
 
     public String getPath() {
-        return null;
+        return path;
     }
 
     public String getProtocolVersion() {
-        return null;
+        return protocolVersion;
     }
 
     public Response createResponse() {
