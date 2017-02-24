@@ -34,7 +34,7 @@ public class SuccessResponse implements Response{
         return responseContent;
     }
 
-    public List<String> createHead(String location, String allow) {
+    private List<String> createHead(String location, String allow) {
         return Arrays.asList(
                 protocolVersion + " " + "200 OK",
                 "Location: " + location,
