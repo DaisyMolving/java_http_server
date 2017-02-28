@@ -1,49 +1,45 @@
 package server;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 
 public class SuccessResponse implements Response{
 
     public String protocolVersion;
-    public List<String> responseContent = new ArrayList<String>();
+    public StringBuilder responseContent = new StringBuilder();
     public String optionsPath;
+    public HashMap<String, String> responseContentOptions = new HashMap<>();
 
     public SuccessResponse(String protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
 
-    public SuccessResponse(String procotolVersion, String optionsPath) {
-        this.protocolVersion = procotolVersion;
+    public SuccessResponse(String protocolVersion, String optionsPath) {
+        this.protocolVersion = protocolVersion;
         this.optionsPath = optionsPath;
+        responseContentOptions.put("/method_options", writeToResponseBody("GET,POST,OPTIONS,HEAD,PUT"));
+        responseContentOptions.put("/method_options2", writeToResponseBody("GET,OPTIONS"));
     }
 
-    public List<String> generateContent() {
-        if (optionsPath == "/method_options") {
-            responseContent.addAll(createHead("", "GET,HEAD,POST,OPTIONS,PUT"));
-            responseContent.addAll(createBody(""));
-            return responseContent;
-        } else if (optionsPath == "/method_options2") {
-            responseContent.addAll(createHead("", "GET,OPTIONS"));
-            responseContent.addAll(createBody(""));
-            return responseContent;
-        }
-        responseContent.addAll(createHead("", ""));
-        responseContent.addAll(createBody(""));
-        return responseContent;
+    public String generateContent() {
+        if (responseContentOptions.containsKey(optionsPath)) {
+            return responseContentOptions.get(optionsPath);
+        } return writeToResponseBody("");
     }
 
-    private List<String> createHead(String location, String allow) {
-        return Arrays.asList(
-                protocolVersion + " " + "200 OK",
-                "Location: " + location,
-                "Allow: " + allow,
-                "\n"
-        );
+    private String writeToResponseBody(String allowOptions) {
+        responseContent.append(createHead("http://localhost:5000/Users/daisymolving/Documents/Apprenticeship/cob_spec/public/", allowOptions));
+        responseContent.append(createBody(""));
+        return responseContent.toString();
     }
 
-    private List<String> createBody(String bodyContent) {
-        return Arrays.asList(bodyContent);
+    private String createHead(String location, String allow) {
+        return protocolVersion + " " + "200 OK\n" +
+                "Location: " + location + "\n" +
+                "Allow: " + allow + "\n" +
+                "\n";
+    }
+
+    private String createBody(String bodyContent) {
+        return bodyContent;
     }
 }

@@ -5,8 +5,8 @@ import java.util.HashMap;
 public class RequestFilter {
 
     private HashMap<String, Request> requestTypes = new HashMap<>();
-    private String methodVerb;
-    private String path;
+    public String methodVerb;
+    public String path;
     private String protocolVersion;
 
     public RequestFilter(String requestInformation) {

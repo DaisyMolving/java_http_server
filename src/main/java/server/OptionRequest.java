@@ -10,6 +10,7 @@ public class OptionRequest implements Request {
         this.protocolVersion = protocolVersion;
     }
 
+
     public String getPath() {
         return path;
     }
@@ -19,10 +20,6 @@ public class OptionRequest implements Request {
     }
 
     public Response createResponse() {
-        if (path.equals("/method_options")) {
-            return new SuccessResponse(protocolVersion, "/method_options");
-        } else {
-            return new SuccessResponse(protocolVersion, "/method_options2");
-        }
+        return new SuccessResponse(protocolVersion, path);
     }
 }

@@ -1,34 +1,28 @@
 package server;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class TeapotResponse implements Response{
 
     public String protocolVersion;
-    public List<String> responseContent = new ArrayList<String>();
+    public StringBuilder responseContent = new StringBuilder();
 
     public TeapotResponse (String protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
 
-    public List<String> generateContent() {
-        responseContent.addAll(createHead("", ""));
-        responseContent.addAll(createBody("I'm a teapot"));
-        return responseContent;
+    public String generateContent() {
+        responseContent.append(createHead("", ""));
+        responseContent.append(createBody("I'm a teapot"));
+        return responseContent.toString();
     }
 
-    public List<String> createHead(String location, String allow) {
-        return Arrays.asList(
-                protocolVersion + " " + "418 I'm a teapot",
-                "Location: " + location,
-                "Allow: " + allow,
-                "\n"
-        );
+    public String createHead(String location, String allow) {
+        return protocolVersion + " " + "418 I'm a teapot\n".concat(
+                "Location: " + location + "\n").concat(
+                "Allow: " + allow + "\n").concat(
+                "\n");
     }
 
-    private List<String> createBody(String bodyContent) {
-        return Arrays.asList(bodyContent);
+    private String createBody(String bodyContent) {
+        return bodyContent;
     }
 }

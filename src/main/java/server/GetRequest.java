@@ -14,10 +14,13 @@ public class GetRequest implements Request {
 
         pathToResponse.put("/", new SuccessResponse(protocolVersion));
         pathToResponse.put("/file1", new SuccessResponse(protocolVersion));
-        pathToResponse.put("/text-file.txt", new SuccessResponse(protocolVersion));
         pathToResponse.put("/redirect", new RedirectResponse(protocolVersion));
         pathToResponse.put("/tea", new SuccessResponse(protocolVersion));
         pathToResponse.put("/coffee", new TeapotResponse(protocolVersion));
+        pathToResponse.put("/text-file.txt", new SuccessResponse(protocolVersion));
+        pathToResponse.put("/image.jpeg", new SuccessResponse(protocolVersion));
+        pathToResponse.put("/image.png", new SuccessResponse(protocolVersion));
+        pathToResponse.put("/image.gif", new SuccessResponse(protocolVersion));
     }
 
     public String getPath() {

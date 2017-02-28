@@ -10,7 +10,7 @@ public class HelloServer {
 
 
     public void start(String[] args) throws IOException {
-        int portNumber= Integer.parseInt(args[1]);
+        int portNumber = Integer.parseInt(args[1]);
         bindServerSocketToPort(portNumber);
         for(;;) {
             acceptConnectionFromClient();
@@ -18,13 +18,13 @@ public class HelloServer {
             BufferedReader input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
             PrintStream output = new PrintStream(clientConnection.getOutputStream());
 
-            Request currentRequest = new RequestFilter(input.readLine()).createByType();
+
+            RequestFilter currentRequestFilter = new RequestFilter(input.readLine());
+            Request currentRequest = currentRequestFilter.createByType();
 
             Response currentResponse = currentRequest.createResponse();
 
-            for (String responseLine : currentResponse.generateContent()) {
-                output.println(responseLine);
-            }
+            output.print(currentResponse.generateContent());
 
             input.close();
             output.close();

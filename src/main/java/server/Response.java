@@ -7,6 +7,6 @@ public interface Response {
     public static final String protocolVersion = new String();
     public static final List<String> responseContent = new ArrayList<String>();
 
-    public List<String> generateContent();
+    public String generateContent();
 
 }
