@@ -17,10 +17,11 @@ public class GetRequest implements Request {
         pathToResponse.put("/redirect", new RedirectResponse(protocolVersion));
         pathToResponse.put("/tea", new SuccessResponse(protocolVersion));
         pathToResponse.put("/coffee", new TeapotResponse(protocolVersion));
-        pathToResponse.put("/text-file.txt", new SuccessResponse(protocolVersion));
-        pathToResponse.put("/image.jpeg", new SuccessResponse(protocolVersion));
-        pathToResponse.put("/image.png", new SuccessResponse(protocolVersion));
-        pathToResponse.put("/image.gif", new SuccessResponse(protocolVersion));
+        pathToResponse.put("/text-file.txt", new SuccessResponse(protocolVersion, path));
+        pathToResponse.put("/image.jpeg", new SuccessResponse(protocolVersion, path));
+        pathToResponse.put("/image.png", new SuccessResponse(protocolVersion, path));
+        pathToResponse.put("/image.gif", new SuccessResponse(protocolVersion, path));
+//        pathToResponse.put("/method_options", new SuccessResponse(protocolVersion, "/method_options"));
     }
 
     public String getPath() {

@@ -6,18 +6,16 @@ import java.net.*;
 public class HelloServer {
 
     public ServerSocket serverSocket;
-    public Socket clientConnection;
 
 
     public void start(String[] args) throws IOException {
         int portNumber = Integer.parseInt(args[1]);
         bindServerSocketToPort(portNumber);
         for(;;) {
-            acceptConnectionFromClient();
+            Socket clientConnection = acceptConnectionFromClient();
 
             BufferedReader input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
             PrintStream output = new PrintStream(clientConnection.getOutputStream());
-
 
             RequestFilter currentRequestFilter = new RequestFilter(input.readLine());
             Request currentRequest = currentRequestFilter.createByType();
@@ -26,9 +24,8 @@ public class HelloServer {
 
             output.print(currentResponse.generateContent());
 
-            input.close();
-            output.close();
-            clientConnection.close();
+            closeSocketConnections(input, output, clientConnection);
+
             System.out.println("I am looping to find new requests");
         }
     }
@@ -41,11 +38,17 @@ public class HelloServer {
         }
     }
 
-    public void acceptConnectionFromClient() {
+    public Socket acceptConnectionFromClient() {
         try {
-            clientConnection = serverSocket.accept();
+            return serverSocket.accept();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+    }
+
+    public void closeSocketConnections(BufferedReader input, PrintStream output, Socket clientConnection) throws IOException {
+        input.close();
+        output.close();
+        clientConnection.close();
     }
 }
