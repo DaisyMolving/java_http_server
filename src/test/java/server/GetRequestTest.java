@@ -2,19 +2,21 @@ package server;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertTrue;
 
 public class GetRequestTest {
 
     @Test
-    public void createsAppropriateResponseFromPathForSimpleGet() {
+    public void createsAppropriateResponseFromPathForSimpleGet() throws IOException {
         String requestInput = "GET / HTTP/1.1";
         Request request = new GetRequest("/", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof SuccessResponse);
     }
 
     @Test
-    public void createsAppropriateResponseFromPathToValidFiles() {
+    public void createsAppropriateResponseFromPathToValidFiles() throws IOException {
         Request teaRequest = new GetRequest("/tea", "HTTP/1.1");
         assertTrue(teaRequest.createResponse() instanceof SuccessResponse);
 
@@ -26,19 +28,19 @@ public class GetRequestTest {
     }
 
     @Test
-    public void createsAppropriateResponseFromPathForRedirect() {
+    public void createsAppropriateResponseFromPathForRedirect() throws IOException {
         Request request = new GetRequest("/redirect", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof RedirectResponse);
     }
 
     @Test
-    public void createsAppropriateResponseFromPathForTeapotFourEighteen() {
+    public void createsAppropriateResponseFromPathForTeapotFourEighteen() throws IOException {
         Request request = new GetRequest("/coffee", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof TeapotResponse);
     }
 
     @Test
-    public void createsAppropriateResponseFromPathForNotFound() {
+    public void createsAppropriateResponseFromPathForNotFound() throws IOException {
         Request request = new GetRequest("/bogus", "HTTP/1.1");
         assertTrue(request.createResponse() instanceof NotFoundResponse);
     }

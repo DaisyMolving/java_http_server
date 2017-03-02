@@ -1,13 +1,9 @@
 package server;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 public interface Request {
 
-  public String path = new String();
-  public String protocolVersion = new String();
-
-  public String getPath();
-
-  public String getProtocolVersion();
-
-  public Response createResponse();
+  public Response createResponse() throws IOException;
 }

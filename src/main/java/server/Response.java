@@ -1,12 +1,11 @@
 package server;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public interface Response {
-    public static final String protocolVersion = new String();
-    public static final List<String> responseContent = new ArrayList<String>();
 
-    public String generateContent();
+    public byte[] generateContent() throws IOException;
 
 }

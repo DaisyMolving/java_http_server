@@ -1,5 +1,7 @@
 package server;
 
+import java.io.IOException;
+
 public class OptionRequest implements Request {
 
     private String path;
@@ -10,16 +12,7 @@ public class OptionRequest implements Request {
         this.protocolVersion = protocolVersion;
     }
 
-
-    public String getPath() {
-        return path;
-    }
-
-    public String getProtocolVersion() {
-        return protocolVersion;
-    }
-
-    public Response createResponse() {
+    public Response createResponse() throws IOException {
         return new SuccessResponse(protocolVersion, path);
     }
 }

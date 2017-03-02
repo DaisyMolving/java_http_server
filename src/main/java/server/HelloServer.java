@@ -6,27 +6,29 @@ import java.net.*;
 public class HelloServer {
 
     public ServerSocket serverSocket;
+    public Socket clientConnection;
+    public BufferedReader input;
+    public PrintStream output;
 
 
-    public void start(String[] args) throws IOException {
+    public void start(String[] args) throws IOException, URISyntaxException {
         int portNumber = Integer.parseInt(args[1]);
         bindServerSocketToPort(portNumber);
         for(;;) {
-            Socket clientConnection = acceptConnectionFromClient();
+            clientConnection = acceptConnectionFromClient();
 
-            BufferedReader input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
-            PrintStream output = new PrintStream(clientConnection.getOutputStream());
+            input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
+            output = new PrintStream(clientConnection.getOutputStream());
 
             RequestFilter currentRequestFilter = new RequestFilter(input.readLine());
             Request currentRequest = currentRequestFilter.createByType();
 
             Response currentResponse = currentRequest.createResponse();
 
-            output.print(currentResponse.generateContent());
+            output.write(currentResponse.generateContent());
 
             closeSocketConnections(input, output, clientConnection);
 
-            System.out.println("I am looping to find new requests");
         }
     }
 

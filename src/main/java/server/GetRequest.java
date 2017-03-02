@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class GetRequest implements Request {
@@ -8,7 +9,7 @@ public class GetRequest implements Request {
     private String protocolVersion;
     private final HashMap<String, Response> pathToResponse = new HashMap<>();
 
-    public GetRequest(String path, String protocolVersion) {
+    public GetRequest(String path, String protocolVersion) throws IOException {
         this.path = path;
         this.protocolVersion = protocolVersion;
 
@@ -21,15 +22,6 @@ public class GetRequest implements Request {
         pathToResponse.put("/image.jpeg", new SuccessResponse(protocolVersion, path));
         pathToResponse.put("/image.png", new SuccessResponse(protocolVersion, path));
         pathToResponse.put("/image.gif", new SuccessResponse(protocolVersion, path));
-//        pathToResponse.put("/method_options", new SuccessResponse(protocolVersion, "/method_options"));
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public String getProtocolVersion() {
-        return protocolVersion;
     }
 
     public Response createResponse() {

@@ -9,10 +9,10 @@ public class TeapotResponse implements Response{
         this.protocolVersion = protocolVersion;
     }
 
-    public String generateContent() {
+    public byte[] generateContent() {
         responseContent.append(createHead("", ""));
         responseContent.append(createBody("I'm a teapot"));
-        return responseContent.toString();
+        return responseContent.toString().getBytes();
     }
 
     public String createHead(String location, String allow) {

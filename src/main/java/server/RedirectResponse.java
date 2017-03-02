@@ -9,10 +9,10 @@ public class RedirectResponse implements Response{
         this.protocolVersion = protocolVersion;
     }
 
-    public String generateContent() {
+    public byte[] generateContent() {
         responseContent.append(createHead("http://localhost:5000/", ""));
         responseContent.append(createBody("")).toString();
-        return responseContent.toString();
+        return responseContent.toString().getBytes();
     }
 
     public String createHead(String location, String allow) {

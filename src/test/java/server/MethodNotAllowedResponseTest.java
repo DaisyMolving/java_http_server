@@ -2,15 +2,17 @@ package server;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 
 public class MethodNotAllowedResponseTest {
 
     @Test
-    public void createsAppropriateResponseContent() {
+    public void createsAppropriateResponseContent() throws IOException {
         Request request = new BogusRequest("/anything", "HTTP/1.1");
-        Response response = new MethodNotAllowedResponse(request.getProtocolVersion());
+        MethodNotAllowedResponse response = new MethodNotAllowedResponse("HTTP/1.1");
         String appropriateResponse = "HTTP/1.1 405 Method Not Allowed\nLocation: \nAllow: \n\n";
-        assertEquals(appropriateResponse, response.generateContent());
+        assertEquals(appropriateResponse, new String(response.generateContent()));
     }
 }

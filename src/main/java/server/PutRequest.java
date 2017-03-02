@@ -10,14 +10,6 @@ public class PutRequest implements Request {
         this.protocolVersion = protocolVersion;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public String getProtocolVersion() {
-        return protocolVersion;
-    }
-
     public Response createResponse() {
         if (path.equals("/form")) {
             return new SuccessResponse(protocolVersion);

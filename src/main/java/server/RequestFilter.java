@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class RequestFilter {
@@ -9,7 +10,7 @@ public class RequestFilter {
     public String path;
     private String protocolVersion;
 
-    public RequestFilter(String requestInformation) {
+    public RequestFilter(String requestInformation) throws IOException {
         splitRequestIntoComponents(requestInformation);
         requestTypes.put("GET", new GetRequest(path, protocolVersion));
         requestTypes.put("POST", new PostRequest(path, protocolVersion));

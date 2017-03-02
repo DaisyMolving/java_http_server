@@ -1,45 +1,87 @@
 package server;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 public class SuccessResponse implements Response{
 
     public String protocolVersion;
-    public StringBuilder responseContent = new StringBuilder();
-    public String optionsPath;
-    public HashMap<String, String> responseContentOptions = new HashMap<>();
+    public String path;
+    public HashMap<String, String> headContentOptions = new HashMap<>();
+    public HashMap<String, byte[]> bodyContentOptions = new HashMap<>();
 
     public SuccessResponse(String protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
 
-    public SuccessResponse(String protocolVersion, String optionsPath) {
+    public SuccessResponse(String protocolVersion, String path) throws IOException {
         this.protocolVersion = protocolVersion;
-        this.optionsPath = optionsPath;
-        responseContentOptions.put("/method_options", writeToResponseBody("GET,POST,OPTIONS,HEAD,PUT"));
-        responseContentOptions.put("/method_options2", writeToResponseBody("GET,OPTIONS"));
+        this.path = path;
+        createHeadOptions();
+        createBodyOptions();
     }
 
-    public String generateContent() {
-        if (responseContentOptions.containsKey(optionsPath)) {
-            return responseContentOptions.get(optionsPath);
-        } return writeToResponseBody("");
+    private void createHeadOptions() {
+        headContentOptions.put("/method_options", createHead("", "GET,POST,OPTIONS,HEAD,PUT", ""));
+        headContentOptions.put("/method_options2", createHead("", "GET,OPTIONS", ""));
+        headContentOptions.put("/image.jpeg", createHead("", "", "image/jpeg"));
+        headContentOptions.put("/image.png", createHead("", "", "image/png"));
+        headContentOptions.put("/image.gif", createHead("", "", "image/gif"));
+        headContentOptions.put("/text-file.txt", createHead("", "", "text/plain"));
+        headContentOptions.put("/file1", createHead("", "", ""));
     }
 
-    private String writeToResponseBody(String allowOptions) {
-        responseContent.append(createHead("http://localhost:5000/Users/daisymolving/Documents/Apprenticeship/cob_spec/public/", allowOptions));
-        responseContent.append(createBody(""));
-        return responseContent.toString();
+    private void createBodyOptions() throws IOException {
+        bodyContentOptions.put("/method_options", createBody("", ""));
+        bodyContentOptions.put("/method_options2", createBody("", ""));
+        bodyContentOptions.put("/image.jpeg", createBody("/Users/daisymolving/Documents/Apprenticeship/cob_spec/public/", "image.jpeg"));
+        bodyContentOptions.put("/image.png", createBody("/Users/daisymolving/Documents/Apprenticeship/cob_spec/public/", "image.png"));
+        bodyContentOptions.put("/image.gif", createBody("/Users/daisymolving/Documents/Apprenticeship/cob_spec/public/", "image.gif"));
+        bodyContentOptions.put("/text-file.txt", createBody("/Users/daisymolving/Documents/Apprenticeship/cob_spec/public/", "text-file.txt"));
+        bodyContentOptions.put("/file1", createBody("/Users/daisymolving/Documents/Apprenticeship/cob_spec/public/", "file1"));
     }
 
-    private String createHead(String location, String allow) {
+    public byte[] generateContent() throws IOException{
+        byte[] head = generateHead();
+        byte[] body = generateBody();
+        int headLength = generateHead().length;
+        int bodyLength = generateBody().length;
+        byte[] content = new byte[headLength + bodyLength];
+        System.arraycopy(head, 0, content, 0,  headLength);
+        System.arraycopy(body, 0, content, headLength, bodyLength);
+        return content;
+    }
+
+    public byte[] generateHead() {
+        if (headContentOptions.containsKey(path)) {
+            return headContentOptions.get(path).getBytes();
+        } return createHead("", "", "").getBytes();
+    }
+
+    public byte[] generateBody() throws IOException {
+        if (bodyContentOptions.containsKey(path)) {
+            return bodyContentOptions.get(path);
+        } return createBody("", "");
+    }
+
+    private String createHead(String location, String allow, String contentType) {
         return protocolVersion + " " + "200 OK\n" +
                 "Location: " + location + "\n" +
                 "Allow: " + allow + "\n" +
+                "Content-Type: " + contentType + "\n" +
                 "\n";
     }
 
-    private String createBody(String bodyContent) {
-        return bodyContent;
+    private byte[] createBody(String contentPath, String fileName) throws IOException {
+        if (contentPath.isEmpty()) {
+            return "".getBytes();
+        } else {
+            Path path = Paths.get(contentPath, fileName);
+            byte[] data = Files.readAllBytes(path);
+            return data;
+        }
     }
 }
