@@ -1,6 +1,6 @@
 package server;
 
-public class TeapotResponse implements Response{
+public class TeapotResponse {
 
     public String protocolVersion;
     public StringBuilder responseContent = new StringBuilder();

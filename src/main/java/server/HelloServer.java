@@ -21,11 +21,9 @@ public class HelloServer {
             output = new PrintStream(clientConnection.getOutputStream());
 
             RequestFilter currentRequestFilter = new RequestFilter(input.readLine());
-            Request currentRequest = currentRequestFilter.createByType();
+            Response response = currentRequestFilter.createByType();
 
-            Response currentResponse = currentRequest.createResponse();
-
-            output.write(currentResponse.generateContent());
+            output.write(response.generateContent());
 
             closeSocketConnections(input, output, clientConnection);
 
