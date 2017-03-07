@@ -17,10 +17,16 @@ public class HelloServer {
         for(;;) {
             clientConnection = acceptConnectionFromClient();
 
+            StringBuilder buffer = new StringBuilder();
             input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
             output = new PrintStream(clientConnection.getOutputStream());
 
-            RequestFilter currentRequestFilter = new RequestFilter(input.readLine());
+            String line;
+            while(!(line = input.readLine()).equals("")) {
+                buffer.append(line + "\n");
+            }
+
+            RequestFilter currentRequestFilter = new RequestFilter(buffer.toString());
             Response response = currentRequestFilter.createByType();
 
             output.write(response.generateContent());

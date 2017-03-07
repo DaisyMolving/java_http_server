@@ -1,15 +1,17 @@
 package server;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class RequestFilter {
 
     private HashMap<String, Response> requestTypes = new HashMap<>();
     public String methodVerb;
+    public String path;
     public String methodVerbAndPath;
+    private String contentLength;
     private String protocolVersion;
-    private HashMap<String, String> responseParameterOptions;
 
     public RequestFilter(String requestInformation) {
         splitRequestIntoComponents(requestInformation);
@@ -138,9 +140,13 @@ public class RequestFilter {
     private void splitRequestIntoComponents(String requestInformation) {
         String[] splitRequest = requestInformation.split("\\s+");
         this.methodVerb = splitRequest[0];
-        String path = splitRequest[1];
+        this.path = splitRequest[1];
         this.protocolVersion = splitRequest[2];
         methodVerbAndPath = methodVerb + " " + path;
+        if (requestInformation.contains("Content-Length")) {
+            this.contentLength = splitRequest[4];
+        }
+        System.out.println(contentLength);
     }
 
 }
