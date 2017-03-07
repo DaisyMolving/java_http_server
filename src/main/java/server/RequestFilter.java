@@ -14,9 +14,10 @@ public class RequestFilter {
     public RequestFilter(String requestInformation) {
         splitRequestIntoComponents(requestInformation);
         requestTypes.put("GET /", getIndex());
+        requestTypes.put("GET /form", getForm());
         requestTypes.put("GET /file1", getFile("file1"));
         requestTypes.put("GET /redirect", getRedirect());
-        requestTypes.put("GET /tea", new Response(protocolVersion + " 200 OK", "", "", "", "", ""));
+        requestTypes.put("GET /tea", new Response(protocolVersion + " 200 OK", "", "", "", "", "", ""));
         requestTypes.put("GET /coffee", getCoffee());
         requestTypes.put("GET /text-file.txt", getFile("text-file.txt"));
         requestTypes.put("GET /image.jpeg", getFile("image.jpeg"));
@@ -24,7 +25,7 @@ public class RequestFilter {
         requestTypes.put("GET /image.gif", getFile("image.gif"));
         requestTypes.put("POST /form", postInformation());
         requestTypes.put("PUT /form", putInformation());
-        requestTypes.put("HEAD /", new Response(protocolVersion + " 200 OK", "", "", "", "", ""));
+        requestTypes.put("HEAD /", new Response(protocolVersion + " 200 OK", "", "", "", "", "", ""));
         requestTypes.put("OPTIONS /method_options", options("GET,POST,OPTIONS,HEAD,PUT"));
         requestTypes.put("OPTIONS /method_options2", options("GET,OPTIONS"));
     }
@@ -37,10 +38,10 @@ public class RequestFilter {
                     protocolVersion + " 405 Method Not Allowed");
         } else if (methodDoesNotExist()) {
             return new Response(
-                protocolVersion + " 405 Method Not Allowed");
+                    protocolVersion + " 405 Method Not Allowed");
         }
         return new Response(
-                    protocolVersion + " 404 Not Found");
+                protocolVersion + " 404 Not Found");
     }
 
     private boolean methodNotCompatible() {
@@ -61,9 +62,10 @@ public class RequestFilter {
         if (fileExists(fileName)) {
             return new Response(
                     protocolVersion + " 200 OK",
-                    "",
+                    fileName,
                     "",
                     getContentType(fileName),
+                    "",
                     "/Users/daisymolving/Documents/Apprenticeship/cob_spec/public/",
                     fileName);
         } return new Response(protocolVersion + " 404 Not Found");
@@ -87,7 +89,8 @@ public class RequestFilter {
     private Response getRedirect() {
         return new Response(
                 protocolVersion + " 302 Found",
-                "http://localhost:5000/",
+                "/",
+                "",
                 "",
                 "",
                 "",
@@ -96,7 +99,19 @@ public class RequestFilter {
 
     private Response getCoffee() {
         return new Response(
-                protocolVersion + " 418 I'm a teapot");
+                protocolVersion + " 418 I'm a teapot",
+                "/",
+                "",
+                "",
+                "I'm a teapot",
+                "",
+                "");
+    }
+
+
+    private Response getForm() {
+        return new Response(
+                protocolVersion + " 200 OK");
     }
 
     private Response postInformation() {
@@ -112,8 +127,9 @@ public class RequestFilter {
     private Response options(String allowedMethods) {
         return new Response(
                 protocolVersion + " 200 OK",
-                "",
+                "/",
                 allowedMethods,
+                "",
                 "",
                 "",
                 "");
