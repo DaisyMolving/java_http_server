@@ -1,20 +1,20 @@
 package server;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class RequestFilter {
 
     private HashMap<String, Response> requestTypes = new HashMap<>();
-    public String methodVerb;
-    public String path;
+    public String requestBody;
     public String methodVerbAndPath;
-    private String contentLength;
     private String protocolVersion;
 
-    public RequestFilter(String requestInformation) {
-        splitRequestIntoComponents(requestInformation);
+    public RequestFilter(String methodVerbAndPath, String protocolVersion, String requestBody) {
+        this.methodVerbAndPath = methodVerbAndPath;
+        this.protocolVersion = protocolVersion;
+        this.requestBody = requestBody;
+
         requestTypes.put("GET /", getIndex());
         requestTypes.put("GET /form", getForm());
         requestTypes.put("GET /file1", getFile("file1"));
@@ -51,6 +51,7 @@ public class RequestFilter {
     }
 
     private boolean methodDoesNotExist() {
+        String methodVerb = methodVerbAndPath.split("\\s+")[0];
         String possibleMethods = "GET, PUT, POST, OPTIONS, HEAD";
         return !(possibleMethods.contains(methodVerb));
     }
@@ -135,18 +136,6 @@ public class RequestFilter {
                 "",
                 "",
                 "");
-    }
-
-    private void splitRequestIntoComponents(String requestInformation) {
-        String[] splitRequest = requestInformation.split("\\s+");
-        this.methodVerb = splitRequest[0];
-        this.path = splitRequest[1];
-        this.protocolVersion = splitRequest[2];
-        methodVerbAndPath = methodVerb + " " + path;
-        if (requestInformation.contains("Content-Length")) {
-            this.contentLength = splitRequest[4];
-        }
-        System.out.println(contentLength);
     }
 
 }

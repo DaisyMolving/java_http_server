@@ -17,22 +17,17 @@ public class HelloServer {
         for(;;) {
             clientConnection = acceptConnectionFromClient();
 
-            StringBuilder buffer = new StringBuilder();
             input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
             output = new PrintStream(clientConnection.getOutputStream());
 
-            String line;
-            while(!(line = input.readLine()).equals("")) {
-                buffer.append(line + "\n");
-            }
+            RequestReader requestReader = new RequestReader(input);
 
-            RequestFilter currentRequestFilter = new RequestFilter(buffer.toString());
+            RequestFilter currentRequestFilter = new RequestFilter(requestReader.getMethodVerbAndPath(), requestReader.getProtocolVersion(), requestReader.getBody());
             Response response = currentRequestFilter.createByType();
 
             output.write(response.generateContent());
 
             closeSocketConnections(input, output, clientConnection);
-
         }
     }
 
