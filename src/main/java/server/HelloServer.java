@@ -1,5 +1,7 @@
 package server;
 
+import server.handler.Handler;
+
 import java.io.*;
 import java.net.*;
 
@@ -14,16 +16,18 @@ public class HelloServer {
     public void start(String[] args) throws IOException, URISyntaxException {
         int portNumber = Integer.parseInt(args[1]);
         bindServerSocketToPort(portNumber);
+        Router router = new Router();
         for(;;) {
             clientConnection = acceptConnectionFromClient();
 
             input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
             output = new PrintStream(clientConnection.getOutputStream());
 
-            RequestReader requestReader = new RequestReader(input);
+            RequestReader request = new RequestReader(input);
 
-            RequestFilter currentRequestFilter = new RequestFilter(requestReader.getMethodVerbAndPath(), requestReader.getProtocolVersion(), requestReader.getBody());
-            Response response = currentRequestFilter.createByType();
+            Handler requestHandler = router.routeNewRequest(request.getMethod(), request.getPath(), request.getBody(), request.getProtocolVersion());
+
+            Response response = requestHandler.send().respond();
 
             output.write(response.generateContent());
 

@@ -2,14 +2,15 @@ package server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class RequestReader {
 
     private BufferedReader requestInput;
-    private String methodVerb;
+    private String method;
     private String path;
     private String protocolVersion;
-    private String methodVerbAndPath;
     private String header;
     private String body;
 
@@ -24,8 +25,12 @@ public class RequestReader {
         return body;
     }
 
-    public String getMethodVerbAndPath() {
-        return methodVerbAndPath;
+    public String getMethod() {
+        return method;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public String getProtocolVersion() {
@@ -35,8 +40,7 @@ public class RequestReader {
     private String readBody() throws IOException {
         String[] splitRequest = splitHeader(header);
         if (hasBodyContent(header)) {
-            int numberOfBytes = Integer.valueOf(splitRequest[4]);
-            return readBytes(numberOfBytes);
+            return readBytes(numberOfBytes(splitRequest));
         } return "";
     }
 
@@ -46,12 +50,17 @@ public class RequestReader {
         return String.valueOf(body);
     }
 
+    private int numberOfBytes(String[] splitRequest) {
+        List<String> componentsList = Arrays.asList(splitRequest);
+        int indexOfByteAmount = componentsList.indexOf("Content-Length:") + 1;
+        return Integer.valueOf(splitRequest[indexOfByteAmount]);
+    }
+
     private void assignStartLineComponents() throws IOException {
         String[] splitRequest = splitHeader(header);
-        this.methodVerb = splitRequest[0];
+        this.method = splitRequest[0];
         this.path = splitRequest[1];
         this.protocolVersion = splitRequest[2];
-        methodVerbAndPath = methodVerb + " " + path;
     }
 
     private String readHeader() throws IOException {

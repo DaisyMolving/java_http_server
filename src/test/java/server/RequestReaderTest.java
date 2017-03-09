@@ -32,7 +32,7 @@ public class RequestReaderTest {
     public void splitsStartLineIntoParts() throws IOException {
         RequestReader requestReader = new RequestReader(createBufferedReader(getRequestString + "\n"));
         assertEquals("HTTP/1.1", requestReader.getProtocolVersion());
-        assertEquals("GET /", requestReader.getMethodVerbAndPath());
+        assertEquals("GET", requestReader.getMethod());
     }
 
     @Test
