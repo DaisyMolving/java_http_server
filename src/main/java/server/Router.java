@@ -8,9 +8,9 @@ public class Router {
 
     private HashMap<String, Handler> requestTypes = new HashMap<>();
 
-    public Handler routeNewRequest(String method, String path, String requestBody, String protocolVersion) {
+    public Handler routeNewRequest(String method, String path, String requestBody, String protocolVersion, DataStore dataStore) {
         requestTypes.put("/", new IndexHandler(method, protocolVersion));
-        requestTypes.put("/form", new FormHandler(method, protocolVersion, requestBody));
+        requestTypes.put("/form", new FormHandler(method, protocolVersion, requestBody, dataStore));
         requestTypes.put("/redirect", new RedirectHandler(method, protocolVersion));
         requestTypes.put("/file1", new FileHandler(method, protocolVersion, path));
         requestTypes.put("/text-file.txt", new FileHandler(method, protocolVersion, path));
