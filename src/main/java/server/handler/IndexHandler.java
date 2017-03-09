@@ -1,6 +1,7 @@
 package server.handler;
 
 import server.request.IndexRequest;
+import server.request.MethodNotAllowedRequest;
 import server.request.Request;
 
 public class IndexHandler implements Handler {
@@ -14,6 +15,13 @@ public class IndexHandler implements Handler {
     }
 
     public Request send() {
-        return new IndexRequest(method, protocolVersion);
+        if (methodExists()) {
+            return new IndexRequest(protocolVersion);
+        } return new MethodNotAllowedRequest(protocolVersion);
+    }
+
+    private boolean methodExists() {
+        String possibleMethods = "GET, PUT, POST, OPTIONS, HEAD, DELETE";
+        return (possibleMethods.contains(method));
     }
 }

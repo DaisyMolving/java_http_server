@@ -1,8 +1,8 @@
 package server.handler;
 
 import server.DataStore;
-import server.request.BogusRequest;
 import server.request.FormRequest;
+import server.request.MethodNotAllowedRequest;
 import server.request.Request;
 
 public class FormHandler implements Handler {
@@ -13,7 +13,6 @@ public class FormHandler implements Handler {
     private final DataStore dataStore;
 
     public FormHandler(String method, String protocolVersion, String requestBody, DataStore dataStore) {
-        System.out.println(method + ": " + requestBody);
         this.method = method;
         this.protocolVersion = protocolVersion;
         this.requestBody = requestBody;
@@ -32,7 +31,7 @@ public class FormHandler implements Handler {
         } else if (method.equals("DELETE")) {
             dataStore.delete();
             return new FormRequest(protocolVersion, dataStore.read());
-        } return new BogusRequest(protocolVersion);
+        } return new MethodNotAllowedRequest(protocolVersion);
     }
 
 }

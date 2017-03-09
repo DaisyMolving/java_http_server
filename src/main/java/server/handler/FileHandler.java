@@ -4,8 +4,6 @@ import server.request.MethodNotAllowedRequest;
 import server.request.Request;
 import server.request.FileRequest;
 
-import java.io.File;
-
 public class FileHandler implements Handler {
 
     private final String method;
@@ -26,21 +24,6 @@ public class FileHandler implements Handler {
 
     public String getFileName(String path) {
         return path.replace("/", "");
-    }
-
-    private String getContentType(String fileName) {
-        if (fileName.contains(".jpeg")) {
-            return "image/jpeg";
-        } else if (fileName.contains(".png")) {
-            return "image/png";
-        } else if (fileName.contains(".gif")) {
-            return "image/gif";
-        } return "text/plain";
-    }
-
-    private boolean fileExists(String fileName) {
-        File file = new File("/Users/daisymolving/Documents/Apprenticeship/cob_spec/public/" + fileName);
-        return (file.exists());
     }
 
 }

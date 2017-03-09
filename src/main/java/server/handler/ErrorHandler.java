@@ -1,6 +1,7 @@
 package server.handler;
 
 import server.request.BogusRequest;
+import server.request.MethodNotAllowedRequest;
 import server.request.Request;
 
 public class ErrorHandler implements Handler {
@@ -14,6 +15,13 @@ public class ErrorHandler implements Handler {
     }
 
     public Request send() {
-        return new BogusRequest(protocolVersion);
+        if (methodExists()) {
+            return new BogusRequest(protocolVersion);
+        } return new MethodNotAllowedRequest(protocolVersion);
+    }
+
+    private boolean methodExists() {
+        String possibleMethods = "GET, PUT, POST, OPTIONS, HEAD, DELETE";
+        return (possibleMethods.contains(method));
     }
 }

@@ -5,10 +5,8 @@ import server.Response;
 public class IndexRequest implements Request {
 
     private String protocolVersion;
-    private String method;
 
-    public IndexRequest(String method, String protocolVersion) {
-        this.method = method;
+    public IndexRequest(String protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
 
