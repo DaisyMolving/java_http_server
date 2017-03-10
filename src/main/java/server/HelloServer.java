@@ -26,7 +26,7 @@ public class HelloServer {
 
             RequestReader request = new RequestReader(input);
 
-            Handler requestHandler = router.routeNewRequest(request.getMethod(), request.getPath(), request.getBody(), request.getProtocolVersion(), dataStore);
+            Handler requestHandler = router.routeNewRequest(request.getRequestParameters(), dataStore);
 
             Response response = requestHandler.send().respond();
 

@@ -2,6 +2,8 @@ package server.request;
 
 import server.Response;
 
+import java.io.IOException;
+
 public class IndexRequest implements Request {
 
     private String protocolVersion;
@@ -10,9 +12,10 @@ public class IndexRequest implements Request {
         this.protocolVersion = protocolVersion;
     }
 
-    public Response respond() {
+    public Response respond() throws IOException {
         return new Response(
                 protocolVersion + " 200 OK",
+                "",
                 "",
                 "",
                 "",

@@ -4,21 +4,25 @@ import server.request.MethodNotAllowedRequest;
 import server.request.Request;
 import server.request.FileRequest;
 
+import java.util.HashMap;
+
 public class FileHandler implements Handler {
 
     private final String method;
     private final String protocolVersion;
     private final String fileName;
+    private final String range;
 
-    public FileHandler(String method, String protocolVersion, String path) {
-        this.method = method;
-        this.protocolVersion = protocolVersion;
-        this.fileName = getFileName(path);
+    public FileHandler(HashMap<String, String> requestParameters) {
+        this.method = requestParameters.get("Method");
+        this.fileName = getFileName(requestParameters.get("Path"));
+        this.protocolVersion = requestParameters.get("Protocol Version");
+        this.range = requestParameters.get("Range");
     }
 
     public Request send() {
         if (method.equals("GET")) {
-            return new FileRequest(protocolVersion, fileName);
+            return new FileRequest(protocolVersion, fileName, range);
         } return new MethodNotAllowedRequest(protocolVersion);
     }
 

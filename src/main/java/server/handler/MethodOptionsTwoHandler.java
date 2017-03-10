@@ -4,14 +4,16 @@ import server.request.MethodNotAllowedRequest;
 import server.request.Request;
 import server.request.MethodOptionsTwoRequest;
 
+import java.util.HashMap;
+
 public class MethodOptionsTwoHandler implements Handler {
 
     private final String method;
     private final String protocolVersion;
 
-    public MethodOptionsTwoHandler(String method, String protocolVersion) {
-        this.method = method;
-        this.protocolVersion = protocolVersion;
+    public MethodOptionsTwoHandler(HashMap<String, String> requestParameters) {
+        this.method = requestParameters.get("Method");
+        this.protocolVersion = requestParameters.get("Protocol Version");
     }
 
     public Request send() {

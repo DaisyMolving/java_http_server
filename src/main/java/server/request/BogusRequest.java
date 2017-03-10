@@ -2,6 +2,8 @@ package server.request;
 
 import server.Response;
 
+import java.io.IOException;
+
 public class BogusRequest implements Request {
 
     private String protocolVersion;
@@ -10,9 +12,10 @@ public class BogusRequest implements Request {
         this.protocolVersion = protocolVersion;
     }
 
-    public Response respond() {
+    public Response respond() throws IOException {
         return new Response(
                 protocolVersion + " 404 Not Found",
+                "",
                 "",
                 "",
                 "",

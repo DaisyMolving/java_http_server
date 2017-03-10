@@ -4,14 +4,16 @@ import server.request.MethodNotAllowedRequest;
 import server.request.MethodOptionsRequest;
 import server.request.Request;
 
+import java.util.HashMap;
+
 public class MethodOptionsHandler implements Handler {
 
     private final String method;
     private final String protocolVersion;
 
-    public MethodOptionsHandler(String method, String protocolVersion) {
-        this.method = method;
-        this.protocolVersion = protocolVersion;
+    public MethodOptionsHandler(HashMap<String , String> requestParameters) {
+        this.method = requestParameters.get("Method");
+        this.protocolVersion = requestParameters.get("Protocol Version");
     }
 
     public Request send() {

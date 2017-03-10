@@ -2,6 +2,8 @@ package server.request;
 
 import server.Response;
 
+import java.io.IOException;
+
 public class FormRequest implements Request {
 
     private String protocolVersion;
@@ -12,10 +14,11 @@ public class FormRequest implements Request {
         this.data = data;
     }
 
-    public Response respond() {
+    public Response respond() throws IOException {
         return new Response(
                 protocolVersion + " 200 OK",
                 "/form",
+                "",
                 "",
                 "",
                 data,

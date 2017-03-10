@@ -5,14 +5,16 @@ import server.request.MethodNotAllowedRequest;
 import server.request.RedirectRequest;
 import server.request.Request;
 
+import java.util.HashMap;
+
 public class RedirectHandler implements Handler {
 
     private final String method;
     private final String protocolVersion;
 
-    public RedirectHandler(String method, String protocolVersion) {
-        this.method = method;
-        this.protocolVersion = protocolVersion;
+    public RedirectHandler(HashMap<String, String> requestParameters) {
+        this.method = requestParameters.get("Method");
+        this.protocolVersion = requestParameters.get("Protocol Version");
     }
 
     public Request send() {

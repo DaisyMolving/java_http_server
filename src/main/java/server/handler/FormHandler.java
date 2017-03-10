@@ -5,6 +5,8 @@ import server.request.FormRequest;
 import server.request.MethodNotAllowedRequest;
 import server.request.Request;
 
+import java.util.HashMap;
+
 public class FormHandler implements Handler {
 
     private final String method;
@@ -12,10 +14,10 @@ public class FormHandler implements Handler {
     private final String requestBody;
     private final DataStore dataStore;
 
-    public FormHandler(String method, String protocolVersion, String requestBody, DataStore dataStore) {
-        this.method = method;
-        this.protocolVersion = protocolVersion;
-        this.requestBody = requestBody;
+    public FormHandler(HashMap<String, String> requestParameters, DataStore dataStore) {
+        this.method = requestParameters.get("Method");
+        this.protocolVersion = requestParameters.get("Protocol Version");
+        this.requestBody = requestParameters.get("Request Body");
         this.dataStore = dataStore;
     }
 
