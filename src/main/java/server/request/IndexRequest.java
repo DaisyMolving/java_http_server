@@ -12,16 +12,13 @@ public class IndexRequest implements Request {
         this.protocolVersion = protocolVersion;
     }
 
-    public Response respond() throws IOException {
+    public Response respond() {
         return new Response(
                 protocolVersion + " 200 OK",
                 "",
                 "",
                 "",
-                "",
-                "",
-                "",
-                "");
+                "".getBytes());
     }
 
 }

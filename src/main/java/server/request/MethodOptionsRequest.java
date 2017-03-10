@@ -18,10 +18,7 @@ public class MethodOptionsRequest implements Request {
                 "/",
                 "GET,HEAD,POST,OPTIONS,PUT",
                 "",
-                "",
-                "",
-                "",
-                "");
+                "".getBytes());
     }
 
 }

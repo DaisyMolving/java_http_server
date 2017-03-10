@@ -18,9 +18,6 @@ public class MethodNotAllowedRequest implements Request {
                 "",
                 "",
                 "",
-                "",
-                "",
-                "",
-                "");
+                "".getBytes());
     }
 }

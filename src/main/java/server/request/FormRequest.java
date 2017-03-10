@@ -14,16 +14,13 @@ public class FormRequest implements Request {
         this.data = data;
     }
 
-    public Response respond() throws IOException {
+    public Response respond() {
         return new Response(
                 protocolVersion + " 200 OK",
                 "/form",
                 "",
                 "",
-                "",
-                data,
-                "",
-                "");
+                data.getBytes());
     }
 
 }

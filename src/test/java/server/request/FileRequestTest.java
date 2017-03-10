@@ -26,4 +26,27 @@ public class FileRequestTest {
         assertEquals("HTTP/1.1 206 Partial Content", fileRequest.respond().startLine);
     }
 
+    @Test
+    public void readsAFile() throws IOException {
+        FileRequest fileRequest = new FileRequest("HTTP/1.1", "file1", null);
+        assertEquals("file1 contents", new String(fileRequest.readFile()));
+    }
+
+    @Test
+    public void readsAPartialFileWhenPassedRangeWithBothEnds() throws IOException {
+        FileRequest fileRequest = new FileRequest("HTTP/1.1", "partial_content.txt", "bytes=3-14");
+        assertEquals("s is a file ", new String(fileRequest.readPartialFile()));
+    }
+
+    @Test
+    public void readsAPartialFileWhenPassedRangeWithNoEnd() throws IOException {
+        FileRequest fileRequest = new FileRequest("HTTP/1.1", "partial_content.txt", "bytes=40-");
+        assertEquals("d part of in order to fulfill a 206.\n", new String(fileRequest.readPartialFile()));
+    }
+
+    @Test
+    public void readsAPartialFileWhenPassedRangeWithNoBeginning() throws IOException {
+        FileRequest fileRequest = new FileRequest("HTTP/1.1", "partial_content.txt", "bytes=-3");
+        assertEquals("6.\n", new String(fileRequest.readPartialFile()));
+    }
 }

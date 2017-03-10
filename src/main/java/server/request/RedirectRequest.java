@@ -12,15 +12,12 @@ public class RedirectRequest implements Request {
         this.protocolVersion = protocolVersion;
     }
 
-    public Response respond() throws IOException {
+    public Response respond() {
         return new Response(
                 protocolVersion + " 302 Found",
                 "/",
                 "",
                 "",
-                "",
-                "",
-                "",
-                "");
+                "".getBytes());
     }
 }
