@@ -18,6 +18,6 @@ public class BogusRequest implements Request {
                 "",
                 "",
                 "",
-                "".getBytes());
+                "404 Not Found".getBytes());
     }
 }

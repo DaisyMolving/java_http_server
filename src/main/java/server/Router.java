@@ -17,6 +17,7 @@ public class Router {
         requestTypes.put("/form", new FormHandler(requestParameters, dataStore));
         requestTypes.put("/redirect", new RedirectHandler(requestParameters));
         requestTypes.put("/file1", new FileHandler(requestParameters));
+        requestTypes.put("/file2", new FileHandler(requestParameters));
         requestTypes.put("/text-file.txt", new FileHandler(requestParameters));
         requestTypes.put("/image.jpeg", new FileHandler(requestParameters));
         requestTypes.put("/image.png", new FileHandler(requestParameters));
