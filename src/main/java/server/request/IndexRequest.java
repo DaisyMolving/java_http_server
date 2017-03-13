@@ -33,7 +33,7 @@ public class IndexRequest implements Request {
     public String addLinks() {
         String htmlLinks = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>";
         for(String link : links) {
-            htmlLinks = htmlLinks + "<a href=\""+ link + "\">" + link + "</a>\n";
+            htmlLinks = htmlLinks + "<a href=\"/"+ link + "\">" + link + "</a>\n";
         }
         htmlLinks = htmlLinks + ("</body></html>");
         return htmlLinks;
