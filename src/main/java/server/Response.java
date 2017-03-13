@@ -9,7 +9,7 @@ public class Response {
     private URI location;
     private String allow = "";
     private String contentType = "";
-    private byte[] bodyContent = "".getBytes();
+    public byte[] bodyContent = "".getBytes();
 
     public Response(String startLine, String location, String allow, String contentType, byte[] bodyContent) {
         this.startLine = startLine;
@@ -39,6 +39,7 @@ public class Response {
                 "Allow: " + allow + "\n" +
                 "Content-Type: " + contentType + "\n" +
                 "Location: " + location + "\n" +
+                "Set-Cookie: " + "\n" +
                 "\n").getBytes();
     }
 

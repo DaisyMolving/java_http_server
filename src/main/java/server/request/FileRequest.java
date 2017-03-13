@@ -111,8 +111,4 @@ public class FileRequest implements Request {
         int sizeFromStart = contentRange.length() - start;
         return numberRange.valueOf(contentRange.toCharArray(), start, sizeFromStart);
     }
-
-    public String urlDecoder(String url) throws UnsupportedEncodingException {
-        return java.net.URLDecoder.decode(url, "UTF-8");
-    }
 }

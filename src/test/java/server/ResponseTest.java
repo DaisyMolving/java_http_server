@@ -15,7 +15,7 @@ public class ResponseTest {
                 "",
                 "",
                 "file1 contents".getBytes());
-        String appropriateContent = "HTTP/1.1 200 OK\nAllow: \nContent-Type: \nLocation: http://localhost:5000\n\nfile1 contents";
+        String appropriateContent = "HTTP/1.1 200 OK\nAllow: \nContent-Type: \nLocation: http://localhost:5000\nSet-Cookie: \n\nfile1 contents";
         assertEquals(appropriateContent, new String(response.generateContent()));
     }
 
