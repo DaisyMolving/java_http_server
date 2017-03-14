@@ -15,6 +15,7 @@ public class RequestReader {
     private String header;
     private String body;
     private String range;
+    private String ifMatch;
 
     public RequestReader(BufferedReader requestInput) throws IOException {
         this.requestInput = requestInput;
@@ -32,6 +33,7 @@ public class RequestReader {
             requestParameters.put("Request Body", body);
         }
         requestParameters.put("Range", range);
+        requestParameters.put("If Match", ifMatch);
         return requestParameters;
     }
 
@@ -62,6 +64,9 @@ public class RequestReader {
         this.protocolVersion = splitRequest[2];
         if (header.contains("Range:")) {
             this.range = getInfo(splitRequest, "Range:");
+        }
+        if (header.contains("If-Match:")) {
+            this.ifMatch = getInfo(splitRequest, "If-Match:");
         }
     }
 

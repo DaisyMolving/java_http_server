@@ -2,9 +2,9 @@ package server.request;
 
 import server.Response;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,29 +15,40 @@ public class FileRequest implements Request {
     private final String protocolVersion;
     private final String fileName;
     private final String contentRange;
+    private final String ifMatch;
+    private final String data;
 
-    public FileRequest(String protocolVersion, String fileName, String contentRange) {
+    public FileRequest(String protocolVersion, String fileName, String contentRange, String ifMatch, String data) {
         this.protocolVersion = protocolVersion;
         this.fileName = fileName;
         this.contentRange = contentRange;
+        this.ifMatch = ifMatch;
+        this.data = data;
     }
 
     public Response respond() throws IOException {
-        if (fileExists(fileName) && contentRange == null) {
-            return new Response(
-                    protocolVersion + " 200 OK",
-                    "",
-                    "",
-                    getContentType(fileName),
-                    readFile());
+
+        String startLine = protocolVersion + " 404 Not Found";
+        byte[] fileData = "".getBytes();
+
+        if (ifMatch != null) {
+            fileData = readFile();
+            startLine = protocolVersion + " 204 No Content";
+            patchFile(data);
+        } else if (fileExists(fileName) && contentRange == null) {
+            fileData = readFile();
+            startLine = protocolVersion + " 200 OK";
         } else if (fileExists(fileName) && contentRange !=null) {
-            return new Response(
-                    protocolVersion + " 206 Partial Content",
-                    "",
-                    "",
-                    getContentType(fileName),
-                    readPartialFile());
-        } return new Response(protocolVersion + " 404 Not Found");
+            fileData = readPartialFile();
+            startLine = protocolVersion + " 206 Partial Content";
+        }
+
+        return new Response(
+                startLine,
+                "",
+                "",
+                getContentType(fileName),
+                fileData);
     }
 
     public byte[] readFile() throws IOException {
@@ -52,6 +63,15 @@ public class FileRequest implements Request {
         int start = getRange(contentRange, length)[0];
         int end = getRange(contentRange, length - 1)[1];
         return Arrays.copyOfRange(readFile(), start, end + 1);
+    }
+
+    public void patchFile(String data) throws IOException {
+        String contentPath = "/Users/daisymolving/Documents/Apprenticeship/cob_spec/public/";
+        Path path = Paths.get(contentPath, fileName);
+        Charset charset = StandardCharsets.UTF_8;
+        String content = new String(Files.readAllBytes(path), charset);
+        content = content.replaceAll(new String(readFile()), data);
+        Files.write(path, content.getBytes(charset));
     }
 
     private String getContentType(String fileName) {
