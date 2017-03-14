@@ -39,7 +39,8 @@ public class Response {
                 "Allow: " + allow + "\n" +
                 "Content-Type: " + contentType + "\n" +
                 "Location: " + location + "\n" +
-                "Set-Cookie: " + "\n" +
+                "Set-Cookie: data=hello" + "\n" +
+                "WWW-Authenticate: Basic realm=\"localhost:5000\"" + "\n" +
                 "\n").getBytes();
     }
 

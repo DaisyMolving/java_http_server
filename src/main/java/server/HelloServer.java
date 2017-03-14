@@ -12,6 +12,8 @@ public class HelloServer {
     public BufferedReader input;
     public PrintStream output;
     public DataStore dataStore = new DataStore();
+    public DataStore cookieStore = new DataStore();
+    public RequestLogStore requestLogStore = new RequestLogStore();
 
 
     public void start(String[] args) throws IOException, URISyntaxException {
@@ -26,7 +28,7 @@ public class HelloServer {
 
             RequestReader request = new RequestReader(input);
 
-            Handler requestHandler = router.routeNewRequest(request.getRequestParameters(), dataStore);
+            Handler requestHandler = router.routeNewRequest(request.getRequestParameters(), dataStore, cookieStore, requestLogStore);
 
             Response response = requestHandler.send().respond();
 

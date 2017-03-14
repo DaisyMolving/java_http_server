@@ -8,10 +8,11 @@ public class Router {
 
     private HashMap<String, Handler> requestTypes = new HashMap<>();
 
-    public Handler routeNewRequest(HashMap<String, String> requestParameters, DataStore dataStore) {
+    public Handler routeNewRequest(HashMap<String, String> requestParameters, DataStore dataStore, DataStore cookieStore, RequestLogStore requestLogStore) {
         String method = requestParameters.get("Method");
         String path = requestParameters.get("Path");
         String protocolVersion = requestParameters.get("Protocol Version");
+        requestLogStore.add(method + " " + path + " " + protocolVersion + "\n");
 
         requestTypes.put("/", new IndexHandler(requestParameters));
         requestTypes.put("/form", new FormHandler(requestParameters, dataStore));
@@ -28,9 +29,10 @@ public class Router {
         requestTypes.put("/method_options", new MethodOptionsHandler(requestParameters));
         requestTypes.put("/method_options2", new MethodOptionsTwoHandler(requestParameters));
         requestTypes.put("/parameters?variable_1=Operators%20%3C%2C%20%3E%2C%20%3D%2C%20!%3D%3B%20%2B%2C%20-%2C%20*%2C%20%26%2C%20%40%2C%20%23%2C%20%24%2C%20%5B%2C%20%5D%3A%20%22is%20that%20all%22%3F&variable_2=stuff", new ParameterHandler(requestParameters));
-        requestTypes.put("/cookie?type=chocolate", new CookieHandler(requestParameters, dataStore));
-        requestTypes.put("/eat_cookie", new CookieHandler(requestParameters, dataStore));
+        requestTypes.put("/cookie?type=chocolate", new CookieHandler(requestParameters, cookieStore));
+        requestTypes.put("/eat_cookie", new CookieHandler(requestParameters, cookieStore));
         requestTypes.put("/patch-content.txt", new FileHandler(requestParameters));
+        requestTypes.put("/logs", new LogsHandler(requestParameters, requestLogStore));
 
         if (requestTypes.containsKey(path)) {
             return requestTypes.get(path);

@@ -17,6 +17,8 @@ public class CookieRequest implements Request {
 
     public Response respond() {
         String contentBody;
+        System.out.println("cookie to add: " + cookieToAdd);
+        System.out.println("stored cookie: " + cookieStore.read());
         if (cookieToAddExists() && cookieStoreIsEmpty()) {
             contentBody = "Eat";
             cookieStore.update("mmmm " + cookieToAdd);
