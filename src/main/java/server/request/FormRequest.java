@@ -2,7 +2,8 @@ package server.request;
 
 import server.Response;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FormRequest implements Request {
 
@@ -15,12 +16,10 @@ public class FormRequest implements Request {
     }
 
     public Response respond() {
-        return new Response(
-                protocolVersion + " 200 OK",
-                "/form",
-                "",
-                "",
-                data.getBytes());
+        List<String> headerFields = new ArrayList<>();
+        headerFields.add(protocolVersion + " 200 OK");
+        byte[] bodyContent = data.getBytes();
+        return new Response(headerFields, bodyContent);
     }
 
 }

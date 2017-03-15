@@ -1,26 +1,16 @@
 package server;
 
 import java.io.IOException;
-import java.net.URI;
+import java.util.List;
 
 public class Response {
 
-    public String startLine;
-    private URI location;
-    private String allow = "";
-    private String contentType = "";
-    public byte[] bodyContent = "".getBytes();
+    private List<String> headerFields;
+    private byte[] bodyContent = "".getBytes();
 
-    public Response(String startLine, String location, String allow, String contentType, byte[] bodyContent) {
-        this.startLine = startLine;
-        this.location = URI.create("http://localhost:5000" + location);
-        this.allow = allow;
-        this.contentType = contentType;
+    public Response(List<String> headerFields, byte[] bodyContent) {
+        this.headerFields = headerFields;
         this.bodyContent = bodyContent;
-    }
-
-    public Response(String startLine) {
-        this.startLine = startLine;
     }
 
     public byte[] generateContent() throws IOException {
@@ -35,13 +25,12 @@ public class Response {
     }
 
     private byte[] createHead() {
-        return (startLine + "\n" +
-                "Allow: " + allow + "\n" +
-                "Content-Type: " + contentType + "\n" +
-                "Location: " + location + "\n" +
-                "Set-Cookie: data=hello" + "\n" +
-                "WWW-Authenticate: Basic realm=\"localhost:5000\"" + "\n" +
-                "\n").getBytes();
+        String header = "";
+        for(String field : headerFields) {
+            header = header.concat(field + "\n");
+        }
+        header = header.concat("\n");
+        return header.getBytes();
     }
 
     private byte[] createBody() throws IOException {

@@ -4,7 +4,9 @@ import server.RequestLogStore;
 import server.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 public class LogsRequest implements Request {
 
@@ -19,23 +21,23 @@ public class LogsRequest implements Request {
     }
 
     public Response respond() throws IOException {
-        System.out.println(credentials);
-        String startLine = "";
-        byte[] fileData = "".getBytes();
+
+        List<String> headerFields = new ArrayList<>();
+        byte[] bodyContent;
+
         if (credentialsAreValid(credentials)) {
-            System.out.println("authorized");
-            startLine = protocolVersion + " 200 OK";
-            fileData = requestLogStore.read().getBytes();
+
+            headerFields.add(protocolVersion + " 200 OK");
+            bodyContent = requestLogStore.read().getBytes();
+
         } else {
-            System.out.println("unauthorized");
-            startLine = protocolVersion + " 401 Unauthorized";
+
+            headerFields.add(protocolVersion + " 401 Unauthorized");
+            headerFields.add("WWW-Authenticate: Basic realm=\"My Server\"");
+            bodyContent = "".getBytes();
         }
-        return new Response(
-                startLine,
-                "",
-                "",
-                "",
-                fileData);
+
+        return new Response(headerFields, bodyContent);
     }
 
     private boolean credentialsAreValid(String credentials) {

@@ -11,7 +11,7 @@ public class MethodNotAllowedRequestTest {
     @Test
     public void methodNotAllowedRequestRespondsWith405() throws IOException {
         MethodNotAllowedRequest methodNotAllowedRequest = new MethodNotAllowedRequest("HTTP/1.1");
-        assertEquals("HTTP/1.1 405 Method Not Allowed", methodNotAllowedRequest.respond().startLine);
+        assertEquals("HTTP/1.1 405 Method Not Allowed\n\n", new String(methodNotAllowedRequest.respond().generateContent()));
     }
 
 }

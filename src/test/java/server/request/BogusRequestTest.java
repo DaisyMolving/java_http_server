@@ -11,7 +11,7 @@ public class BogusRequestTest {
     @Test
     public void bogusRequestRespondsWith404() throws IOException {
         BogusRequest bogusRequest = new BogusRequest("HTTP/1.1");
-        assertEquals("HTTP/1.1 404 Not Found", bogusRequest.respond().startLine);
+        assertEquals("HTTP/1.1 404 Not Found\n\n404 Not Found", new String(bogusRequest.respond().generateContent()));
     }
 
 }

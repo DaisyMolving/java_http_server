@@ -3,6 +3,8 @@ package server.request;
 import server.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MethodOptionsTwoRequest implements Request {
 
@@ -13,11 +15,12 @@ public class MethodOptionsTwoRequest implements Request {
     }
 
     public Response respond() {
-        return new Response(
-                protocolVersion + " 200 OK",
-                "/",
-                "GET,OPTIONS",
-                "",
-                "".getBytes());
+
+        List<String> headerFields = new ArrayList<>();
+        headerFields.add(protocolVersion + " 200 OK");
+        headerFields.add("Allow: GET,OPTIONS");
+        byte[] bodyContent = "".getBytes();
+
+        return new Response(headerFields, bodyContent);
     }
 }

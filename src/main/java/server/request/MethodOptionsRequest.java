@@ -2,7 +2,8 @@ package server.request;
 
 import server.Response;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MethodOptionsRequest implements Request {
 
@@ -12,13 +13,14 @@ public class MethodOptionsRequest implements Request {
         this.protocolVersion = protocolVersion;
     }
 
-    public Response respond() throws IOException {
-        return new Response(
-                protocolVersion + " 200 OK",
-                "/",
-                "GET,HEAD,POST,OPTIONS,PUT",
-                "",
-                "".getBytes());
+    public Response respond() {
+
+        List<String> headerFields = new ArrayList<>();
+        headerFields.add(protocolVersion + " 200 OK");
+        headerFields.add("Allow: GET,HEAD,POST,OPTIONS,PUT");
+        byte[] bodyContent = "".getBytes();
+
+        return new Response(headerFields, bodyContent);
     }
 
 }

@@ -3,6 +3,8 @@ package server.request;
 import server.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MethodNotAllowedRequest implements Request {
 
@@ -13,11 +15,11 @@ public class MethodNotAllowedRequest implements Request {
     }
 
     public Response respond() throws IOException {
-        return new Response(
-                protocolVersion + " 405 Method Not Allowed",
-                "",
-                "",
-                "",
-                "".getBytes());
+
+        List<String> headerFields = new ArrayList<>();
+        headerFields.add(protocolVersion + " 405 Method Not Allowed");
+        byte[] bodyContent = "".getBytes();
+
+        return new Response(headerFields, bodyContent);
     }
 }

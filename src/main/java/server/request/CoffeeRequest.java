@@ -2,7 +2,8 @@ package server.request;
 
 import server.Response;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CoffeeRequest implements Request {
 
@@ -13,11 +14,9 @@ public class CoffeeRequest implements Request {
     }
 
     public Response respond() {
-        return new Response(
-                protocolVersion + " 418 I'm a teapot",
-                "",
-                "",
-                "",
-                "I'm a teapot".getBytes());
+        List<String> headerFields = new ArrayList<>();
+        headerFields.add(protocolVersion + " 418 I'm a teapot");
+        byte[] bodyContent = "I'm a teapot".getBytes();
+        return new Response(headerFields, bodyContent);
     }
 }

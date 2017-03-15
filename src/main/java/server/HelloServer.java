@@ -1,44 +1,35 @@
 package server;
 
-import server.handler.Handler;
-
-import java.io.*;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HelloServer {
 
-    public ServerSocket serverSocket;
-    public Socket clientConnection;
-    public BufferedReader input;
-    public PrintStream output;
-    public DataStore dataStore = new DataStore();
-    public DataStore cookieStore = new DataStore();
-    public RequestLogStore requestLogStore = new RequestLogStore();
+    private ServerSocket serverSocket;
+    private ExecutorService threadPool = Executors.newFixedThreadPool(100);
+    private Router router = new Router();
+    private DataStore dataStore = new DataStore();
+    private DataStore cookieStore = new DataStore();
+    private RequestLogStore requestLogStore = new RequestLogStore();
 
-
-    public void start(String[] args) throws IOException, URISyntaxException {
+    public void start(String[] args){
         int portNumber = Integer.parseInt(args[1]);
         bindServerSocketToPort(portNumber);
-        Router router = new Router();
-        for(;;) {
-            clientConnection = acceptConnectionFromClient();
-
-            input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
-            output = new PrintStream(clientConnection.getOutputStream());
-
-            RequestReader request = new RequestReader(input);
-
-            Handler requestHandler = router.routeNewRequest(request.getRequestParameters(), dataStore, cookieStore, requestLogStore);
-
-            Response response = requestHandler.send().respond();
-
-            output.write(response.generateContent());
-
-            closeSocketConnections(input, output, clientConnection);
+        while(running()){
+            Socket clientSocket = acceptConnectionFromClient(serverSocket);
+            threadPool.execute(new RequestResponseProcess(clientSocket, router, dataStore, cookieStore, requestLogStore));
         }
+        threadPool.shutdown();
     }
 
-    public void bindServerSocketToPort(int portNumber) {
+    private boolean running() {
+        return true;
+    }
+
+    private void bindServerSocketToPort(int portNumber) {
         try {
             serverSocket = new ServerSocket(portNumber);
         } catch (IOException e) {
@@ -46,17 +37,11 @@ public class HelloServer {
         }
     }
 
-    public Socket acceptConnectionFromClient() {
+    public Socket acceptConnectionFromClient(ServerSocket serverSocket) {
         try {
             return serverSocket.accept();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void closeSocketConnections(BufferedReader input, PrintStream output, Socket clientConnection) throws IOException {
-        input.close();
-        output.close();
-        clientConnection.close();
     }
 }

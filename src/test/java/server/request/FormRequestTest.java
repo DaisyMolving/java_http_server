@@ -11,7 +11,7 @@ public class FormRequestTest {
     @Test
     public void formRequestRespondsWith200() throws IOException {
         FormRequest formRequest = new FormRequest("HTTP/1.1", "data=dog");
-        assertEquals("HTTP/1.1 200 OK", formRequest.respond().startLine);
+        assertEquals("HTTP/1.1 200 OK\n\ndata=dog", new String(formRequest.respond().generateContent()));
     }
 
 }

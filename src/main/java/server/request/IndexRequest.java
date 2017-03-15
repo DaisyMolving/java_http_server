@@ -24,12 +24,10 @@ public class IndexRequest implements Request {
     }
 
     public Response respond() throws IOException {
-        return new Response(
-                protocolVersion + " 200 OK",
-                "",
-                "",
-                "",
-                addLinks().getBytes());
+        List<String> headerFields = new ArrayList<>();
+        headerFields.add(protocolVersion + " 200 OK");
+        byte[] bodyContent = addLinks().getBytes();
+        return new Response(headerFields, bodyContent);
     }
 
     public String addLinks() throws IOException {

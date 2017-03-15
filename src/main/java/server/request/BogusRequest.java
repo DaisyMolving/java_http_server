@@ -3,6 +3,8 @@ package server.request;
 import server.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BogusRequest implements Request {
 
@@ -13,11 +15,9 @@ public class BogusRequest implements Request {
     }
 
     public Response respond() {
-        return new Response(
-                protocolVersion + " 404 Not Found",
-                "",
-                "",
-                "",
-                "404 Not Found".getBytes());
+        List<String> headerFields = new ArrayList<>();
+        headerFields.add(protocolVersion + " 404 Not Found");
+        byte[] bodyContent = "404 Not Found".getBytes();
+        return new Response(headerFields, bodyContent);
     }
 }

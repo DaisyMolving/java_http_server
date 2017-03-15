@@ -8,7 +8,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class FileRequest implements Request {
 
@@ -28,27 +30,36 @@ public class FileRequest implements Request {
 
     public Response respond() throws IOException {
 
-        String startLine = protocolVersion + " 404 Not Found";
-        byte[] fileData = "".getBytes();
+        byte[] bodyContent;
+        List<String> headerFields = new ArrayList<>();
 
         if (ifMatch != null) {
-            fileData = readFile();
-            startLine = protocolVersion + " 204 No Content";
+
+            headerFields.add(protocolVersion + " 204 No Content");
+            headerFields.add("Content-Type: " + getContentType(fileName));
+            bodyContent = readFile();
             patchFile(data);
+
         } else if (fileExists(fileName) && contentRange == null) {
-            fileData = readFile();
-            startLine = protocolVersion + " 200 OK";
+
+            headerFields.add(protocolVersion + " 200 OK");
+            headerFields.add("Content-Type: " + getContentType(fileName));
+            bodyContent = readFile();
+
         } else if (fileExists(fileName) && contentRange !=null) {
-            fileData = readPartialFile();
-            startLine = protocolVersion + " 206 Partial Content";
+
+            headerFields.add(protocolVersion + " 206 Partial Content");
+            headerFields.add("Content-Type: " + getContentType(fileName));
+            bodyContent = readPartialFile();
+
+        } else {
+
+            headerFields.add(protocolVersion + " 404 Not Found");
+            bodyContent = "404 Not Found".getBytes();
+
         }
 
-        return new Response(
-                startLine,
-                "",
-                "",
-                getContentType(fileName),
-                fileData);
+        return new Response(headerFields, bodyContent);
     }
 
     public byte[] readFile() throws IOException {

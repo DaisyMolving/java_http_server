@@ -4,6 +4,8 @@ import server.Response;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParameterRequest implements Request {
 
@@ -16,19 +18,19 @@ public class ParameterRequest implements Request {
     }
 
     public Response respond() throws UnsupportedEncodingException {
-        return new Response(
-                protocolVersion + " 200 OK",
-                "",
-                "",
-                "",
-                decodeParameters().getBytes());
+
+        List<String> headerFields = new ArrayList<>();
+        headerFields.add(protocolVersion + " 200 OK");
+        byte[] bodyContent = decodeParameters().getBytes();
+
+        return new Response(headerFields, bodyContent);
     }
 
     public String decodeParameters() throws UnsupportedEncodingException {
         return URLDecoder.decode(formatParameters(urlParameters), "UTF-8");
     }
 
-    public String formatParameters(String urlParameters) {
+    private String formatParameters(String urlParameters) {
         String separatedParameters = urlParameters.replaceAll("&", "\n");
         String formattedParameters = separatedParameters.replaceAll("=", " = ");
         return formattedParameters;

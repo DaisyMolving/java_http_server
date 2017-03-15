@@ -11,7 +11,7 @@ public class MethodOptionsTwoRequestTest {
     @Test
     public void methodOptionsTwoRequestRespondsWith200() throws IOException {
         MethodOptionsTwoRequest methodOptionsTwoRequest = new MethodOptionsTwoRequest("HTTP/1.1");
-        assertEquals("HTTP/1.1 200 OK", methodOptionsTwoRequest.respond().startLine);
+        assertEquals("HTTP/1.1 200 OK\nAllow: GET,OPTIONS\n\n", new String(methodOptionsTwoRequest.respond().generateContent()));
     }
 
 }

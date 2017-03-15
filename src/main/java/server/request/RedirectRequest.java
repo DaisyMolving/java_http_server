@@ -3,6 +3,8 @@ package server.request;
 import server.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RedirectRequest implements Request {
 
@@ -13,11 +15,13 @@ public class RedirectRequest implements Request {
     }
 
     public Response respond() {
-        return new Response(
-                protocolVersion + " 302 Found",
-                "/",
-                "",
-                "",
-                "".getBytes());
+
+
+        List<String> headerFields = new ArrayList<>();
+        headerFields.add(protocolVersion + " 302 Found");
+        headerFields.add("Location: " + "http://localhost:5000/");
+        byte[] bodyContent = "".getBytes();
+
+        return new Response(headerFields, bodyContent);
     }
 }

@@ -3,6 +3,9 @@ package server.request;
 import server.DataStore;
 import server.Response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CookieRequest implements Request {
 
     private String protocolVersion;
@@ -16,24 +19,30 @@ public class CookieRequest implements Request {
     }
 
     public Response respond() {
-        String contentBody;
-        System.out.println("cookie to add: " + cookieToAdd);
-        System.out.println("stored cookie: " + cookieStore.read());
+        byte[] bodyContent;
+        List<String> headerFields = new ArrayList<>();
+
         if (cookieToAddExists() && cookieStoreIsEmpty()) {
-            contentBody = "Eat";
+
+            headerFields.add(protocolVersion + " 200 OK");
+            headerFields.add("Set-Cookie: " + cookieToAdd);
+            bodyContent = "Eat".getBytes();
             cookieStore.update("mmmm " + cookieToAdd);
+
         } else if (cookieToAddExists() && storeHasCookie()) {
-            contentBody = cookieStore.read();
+
+            headerFields.add(protocolVersion + " 200 OK");
+            headerFields.add("Set-Cookie: " + cookieToAdd);
+            bodyContent = cookieStore.read().getBytes();
             cookieStore.update("mmmm " + cookieToAdd);
+
         } else {
-            contentBody = cookieStore.read();
+
+            headerFields.add(protocolVersion + " 200 OK");
+            bodyContent = cookieStore.read().getBytes();
             cookieStore.delete();
-        } return new Response(
-                protocolVersion + " 200 OK",
-                "",
-                "",
-                "",
-                contentBody.getBytes());
+
+        } return new Response(headerFields, bodyContent);
     }
 
     private boolean storeHasCookie() {
