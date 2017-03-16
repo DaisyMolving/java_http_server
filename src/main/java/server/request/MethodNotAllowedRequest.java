@@ -18,8 +18,7 @@ public class MethodNotAllowedRequest implements Request {
 
         List<String> headerFields = new ArrayList<>();
         headerFields.add(protocolVersion + " 405 Method Not Allowed");
-        byte[] bodyContent = "".getBytes();
 
-        return new Response(headerFields, bodyContent);
+        return new Response(headerFields, "");
     }
 }

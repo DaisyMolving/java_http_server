@@ -26,8 +26,7 @@ public class IndexRequest implements Request {
     public Response respond() throws IOException {
         List<String> headerFields = new ArrayList<>();
         headerFields.add(protocolVersion + " 200 OK");
-        byte[] bodyContent = addLinks().getBytes();
-        return new Response(headerFields, bodyContent);
+        return new Response(headerFields, addLinks());
     }
 
     public String addLinks() throws IOException {

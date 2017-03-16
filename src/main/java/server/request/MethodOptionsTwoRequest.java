@@ -18,8 +18,7 @@ public class MethodOptionsTwoRequest implements Request {
         List<String> headerFields = new ArrayList<>();
         headerFields.add(protocolVersion + " 200 OK");
         headerFields.add("Allow: GET,OPTIONS");
-        byte[] bodyContent = "".getBytes();
 
-        return new Response(headerFields, bodyContent);
+        return new Response(headerFields, "");
     }
 }

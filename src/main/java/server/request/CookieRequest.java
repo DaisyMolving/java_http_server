@@ -19,27 +19,27 @@ public class CookieRequest implements Request {
     }
 
     public Response respond() {
-        byte[] bodyContent;
+        String bodyContent;
         List<String> headerFields = new ArrayList<>();
 
         if (cookieToAddExists() && cookieStoreIsEmpty()) {
 
             headerFields.add(protocolVersion + " 200 OK");
             headerFields.add("Set-Cookie: " + cookieToAdd);
-            bodyContent = "Eat".getBytes();
+            bodyContent = "Eat";
             cookieStore.update("mmmm " + cookieToAdd);
 
         } else if (cookieToAddExists() && storeHasCookie()) {
 
             headerFields.add(protocolVersion + " 200 OK");
             headerFields.add("Set-Cookie: " + cookieToAdd);
-            bodyContent = cookieStore.read().getBytes();
+            bodyContent = cookieStore.read();
             cookieStore.update("mmmm " + cookieToAdd);
 
         } else {
 
             headerFields.add(protocolVersion + " 200 OK");
-            bodyContent = cookieStore.read().getBytes();
+            bodyContent = cookieStore.read();
             cookieStore.delete();
 
         } return new Response(headerFields, bodyContent);

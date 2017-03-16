@@ -16,7 +16,6 @@ public class CoffeeRequest implements Request {
     public Response respond() {
         List<String> headerFields = new ArrayList<>();
         headerFields.add(protocolVersion + " 418 I'm a teapot");
-        byte[] bodyContent = "I'm a teapot".getBytes();
-        return new Response(headerFields, bodyContent);
+        return new Response(headerFields, "I'm a teapot");
     }
 }

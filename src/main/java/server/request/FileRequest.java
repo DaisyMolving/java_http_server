@@ -30,32 +30,32 @@ public class FileRequest implements Request {
 
     public Response respond() throws IOException {
 
-        byte[] bodyContent;
+        String bodyContent;
         List<String> headerFields = new ArrayList<>();
 
         if (ifMatch != null) {
 
             headerFields.add(protocolVersion + " 204 No Content");
             headerFields.add("Content-Type: " + getContentType(fileName));
-            bodyContent = readFile();
+            bodyContent = new String(readFile());
             patchFile(data);
 
         } else if (fileExists(fileName) && contentRange == null) {
 
             headerFields.add(protocolVersion + " 200 OK");
             headerFields.add("Content-Type: " + getContentType(fileName));
-            bodyContent = readFile();
+            bodyContent = new String(readFile());
 
         } else if (fileExists(fileName) && contentRange !=null) {
 
             headerFields.add(protocolVersion + " 206 Partial Content");
             headerFields.add("Content-Type: " + getContentType(fileName));
-            bodyContent = readPartialFile();
+            bodyContent = new String(readPartialFile());
 
         } else {
 
             headerFields.add(protocolVersion + " 404 Not Found");
-            bodyContent = "404 Not Found".getBytes();
+            bodyContent = "404 Not Found";
 
         }
 

@@ -16,7 +16,6 @@ public class BogusRequest implements Request {
     public Response respond() {
         List<String> headerFields = new ArrayList<>();
         headerFields.add(protocolVersion + " 404 Not Found");
-        byte[] bodyContent = "404 Not Found".getBytes();
-        return new Response(headerFields, bodyContent);
+        return new Response(headerFields, "404 Not Found");
     }
 }

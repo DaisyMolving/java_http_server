@@ -19,8 +19,7 @@ public class RedirectRequest implements Request {
         List<String> headerFields = new ArrayList<>();
         headerFields.add(protocolVersion + " 302 Found");
         headerFields.add("Location: " + "http://localhost:5000/");
-        byte[] bodyContent = "".getBytes();
 
-        return new Response(headerFields, bodyContent);
+        return new Response(headerFields, "");
     }
 }

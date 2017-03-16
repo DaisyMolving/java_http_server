@@ -6,34 +6,30 @@ import java.util.List;
 public class Response {
 
     private List<String> headerFields;
-    private byte[] bodyContent = "".getBytes();
+    private String bodyContent = "";
 
-    public Response(List<String> headerFields, byte[] bodyContent) {
+    public Response(List<String> headerFields, String bodyContent) {
         this.headerFields = headerFields;
         this.bodyContent = bodyContent;
     }
 
     public byte[] generateContent() throws IOException {
-        byte[] head = createHead();
-        byte[] body = createBody();
-        int headLength = head.length;
-        int bodyLength = body.length;
-        byte[] content = new byte[headLength + bodyLength];
-        System.arraycopy(head, 0, content, 0,  headLength);
-        System.arraycopy(body, 0, content, headLength, bodyLength);
-        return content;
+        String head = createHead();
+        String body = createBody();
+        String content = head.concat(body);
+        return content.getBytes();
     }
 
-    private byte[] createHead() {
+    private String createHead() {
         String header = "";
         for(String field : headerFields) {
             header = header.concat(field + "\n");
         }
         header = header.concat("\n");
-        return header.getBytes();
+        return header;
     }
 
-    private byte[] createBody() throws IOException {
+    private String createBody() throws IOException {
         return bodyContent;
     }
 }

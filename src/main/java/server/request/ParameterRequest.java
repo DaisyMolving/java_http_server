@@ -21,9 +21,8 @@ public class ParameterRequest implements Request {
 
         List<String> headerFields = new ArrayList<>();
         headerFields.add(protocolVersion + " 200 OK");
-        byte[] bodyContent = decodeParameters().getBytes();
 
-        return new Response(headerFields, bodyContent);
+        return new Response(headerFields, decodeParameters());
     }
 
     public String decodeParameters() throws UnsupportedEncodingException {

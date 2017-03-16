@@ -23,18 +23,18 @@ public class LogsRequest implements Request {
     public Response respond() throws IOException {
 
         List<String> headerFields = new ArrayList<>();
-        byte[] bodyContent;
+        String bodyContent;
 
         if (credentialsAreValid(credentials)) {
 
             headerFields.add(protocolVersion + " 200 OK");
-            bodyContent = requestLogStore.read().getBytes();
+            bodyContent = requestLogStore.read();
 
         } else {
 
             headerFields.add(protocolVersion + " 401 Unauthorized");
             headerFields.add("WWW-Authenticate: Basic realm=\"My Server\"");
-            bodyContent = "".getBytes();
+            bodyContent = "";
         }
 
         return new Response(headerFields, bodyContent);
