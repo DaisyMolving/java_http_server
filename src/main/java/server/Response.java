@@ -1,35 +1,37 @@
 package server;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
 public class Response {
 
     private List<String> headerFields;
-    private String bodyContent = "";
+    private byte[] bodyContent = "".getBytes();
 
-    public Response(List<String> headerFields, String bodyContent) {
+
+    public Response(List<String> headerFields, byte[] bodyContent) {
         this.headerFields = headerFields;
         this.bodyContent = bodyContent;
     }
 
     public byte[] generateContent() throws IOException {
-        String head = createHead();
-        String body = createBody();
-        String content = head.concat(body);
-        return content.getBytes();
+        byte[] header = createHeader();
+        byte[] body = bodyContent;
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
+        outputStream.write(header);
+        outputStream.write(body);
+
+        return outputStream.toByteArray();
     }
 
-    private String createHead() {
+    private byte[] createHeader() {
         String header = "";
         for(String field : headerFields) {
             header = header.concat(field + "\n");
         }
         header = header.concat("\n");
-        return header;
-    }
-
-    private String createBody() throws IOException {
-        return bodyContent;
+        return header.getBytes();
     }
 }

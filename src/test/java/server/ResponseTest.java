@@ -15,7 +15,7 @@ public class ResponseTest {
     @Test
     public void generatesResponseContent() throws IOException {
         headerFields.add("HTTP/1.1 200 OK");
-        Response response = new Response(headerFields, "file1 contents");
+        Response response = new Response(headerFields, "file1 contents".getBytes());
         String appropriateContent = "HTTP/1.1 200 OK\n\nfile1 contents";
         assertEquals(appropriateContent, new String(response.generateContent()));
     }

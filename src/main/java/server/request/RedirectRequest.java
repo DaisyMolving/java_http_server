@@ -15,11 +15,10 @@ public class RedirectRequest implements Request {
 
     public Response respond() {
 
-
         List<String> headerFields = new ArrayList<>();
         headerFields.add(protocolVersion + " 302 Found");
         headerFields.add("Location: " + "http://localhost:5000/");
 
-        return new Response(headerFields, "");
+        return new Response(headerFields, "".getBytes());
     }
 }

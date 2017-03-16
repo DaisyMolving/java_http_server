@@ -4,7 +4,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class FileRequestTest {
 
@@ -65,4 +68,26 @@ public class FileRequestTest {
         assertEquals("HTTP/1.1 204 No Content\nContent-Type: text/plain\n\ndefault content\n", new String(fileRequest.respond().generateContent()));
         fileRequest.patchFile("default content\n");
     }
+
+    @Test
+    public void returnsA200ForAJPEGFile() throws IOException {
+        FileRequest fileRequest = new FileRequest("HTTP/1.1", "image.jpeg", null, null, null);
+        String output = new String(fileRequest.respond().generateContent());
+        assertTrue(output.contains("HTTP/1.1 200 OK\nContent-Type: image/jpeg"));
+    }
+
+    @Test
+    public void returnsA200ForAPNGFile() throws IOException {
+        FileRequest fileRequest = new FileRequest("HTTP/1.1", "image.png", null, null, null);
+        String output = new String(fileRequest.respond().generateContent());
+        assertTrue(output.contains("HTTP/1.1 200 OK\nContent-Type: image/png"));
+    }
+
+    @Test
+    public void returnsA200ForAGIFFile() throws IOException {
+        FileRequest fileRequest = new FileRequest("HTTP/1.1", "image.gif", null, null, null);
+        String output = new String(fileRequest.respond().generateContent());
+        assertTrue(output.contains("HTTP/1.1 200 OK\nContent-Type: image/gif"));
+    }
+
 }

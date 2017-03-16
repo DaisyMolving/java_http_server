@@ -19,7 +19,7 @@ public class MethodOptionsRequest implements Request {
         headerFields.add(protocolVersion + " 200 OK");
         headerFields.add("Allow: GET,HEAD,POST,OPTIONS,PUT");
 
-        return new Response(headerFields, "");
+        return new Response(headerFields, "".getBytes());
     }
 
 }

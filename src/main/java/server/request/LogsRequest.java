@@ -37,7 +37,7 @@ public class LogsRequest implements Request {
             bodyContent = "";
         }
 
-        return new Response(headerFields, bodyContent);
+        return new Response(headerFields, bodyContent.getBytes());
     }
 
     private boolean credentialsAreValid(String credentials) {

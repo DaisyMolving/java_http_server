@@ -42,7 +42,7 @@ public class CookieRequest implements Request {
             bodyContent = cookieStore.read();
             cookieStore.delete();
 
-        } return new Response(headerFields, bodyContent);
+        } return new Response(headerFields, bodyContent.getBytes());
     }
 
     private boolean storeHasCookie() {

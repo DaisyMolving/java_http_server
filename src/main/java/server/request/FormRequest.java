@@ -18,7 +18,7 @@ public class FormRequest implements Request {
     public Response respond() {
         List<String> headerFields = new ArrayList<>();
         headerFields.add(protocolVersion + " 200 OK");
-        return new Response(headerFields, data);
+        return new Response(headerFields, data.getBytes());
     }
 
 }

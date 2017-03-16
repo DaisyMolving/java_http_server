@@ -19,6 +19,6 @@ public class MethodOptionsTwoRequest implements Request {
         headerFields.add(protocolVersion + " 200 OK");
         headerFields.add("Allow: GET,OPTIONS");
 
-        return new Response(headerFields, "");
+        return new Response(headerFields, "".getBytes());
     }
 }

@@ -22,7 +22,7 @@ public class ParameterRequest implements Request {
         List<String> headerFields = new ArrayList<>();
         headerFields.add(protocolVersion + " 200 OK");
 
-        return new Response(headerFields, decodeParameters());
+        return new Response(headerFields, decodeParameters().getBytes());
     }
 
     public String decodeParameters() throws UnsupportedEncodingException {
