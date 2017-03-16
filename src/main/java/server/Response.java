@@ -19,7 +19,7 @@ public class Response {
         byte[] header = createHeader();
         byte[] body = bodyContent;
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         outputStream.write(header);
         outputStream.write(body);
 

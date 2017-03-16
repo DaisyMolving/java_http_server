@@ -28,15 +28,9 @@ public class RequestResponseProcess implements Runnable{
             BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintStream output = new PrintStream(clientSocket.getOutputStream());
 
-            RequestReader readInput = new RequestReader(input);
+            byte[] responseContent = directRequestInputForResponseOutput(input);
 
-            Handler requestHandler = router.routeNewRequest(readInput.getRequestParameters(), dataStore, cookieStore, requestLogStore);
-
-            Request request = requestHandler.send();
-
-            Response response = request.respond();
-
-            output.write(response.generateContent());
+            output.write(responseContent);
 
             output.close();
             input.close();
@@ -44,5 +38,18 @@ public class RequestResponseProcess implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public byte[] directRequestInputForResponseOutput(BufferedReader input) throws IOException {
+
+        RequestReader readInput = new RequestReader(input);
+
+        Handler requestHandler = router.routeNewRequest(readInput.getRequestParameters(), dataStore, cookieStore, requestLogStore);
+
+        Request request = requestHandler.send();
+
+        Response response = request.respond();
+
+        return response.generateContent();
     }
 }
