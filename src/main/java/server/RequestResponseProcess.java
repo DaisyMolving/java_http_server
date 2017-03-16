@@ -1,10 +1,10 @@
 package server;
 
 import server.handler.Handler;
+import server.request.Request;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.URISyntaxException;
 
 public class RequestResponseProcess implements Runnable{
 
@@ -24,17 +24,24 @@ public class RequestResponseProcess implements Runnable{
 
     public void run() {
         try {
+
             BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintStream output = new PrintStream(clientSocket.getOutputStream());
-            RequestReader request = new RequestReader(input);
-            Handler requestHandler = router.routeNewRequest(request.getRequestParameters(), dataStore, cookieStore, requestLogStore);
-            Response response = requestHandler.send().respond();
+
+            RequestReader readInput = new RequestReader(input);
+
+            Handler requestHandler = router.routeNewRequest(readInput.getRequestParameters(), dataStore, cookieStore, requestLogStore);
+
+            Request request = requestHandler.send();
+
+            Response response = request.respond();
+
             output.write(response.generateContent());
+
             output.close();
             input.close();
+
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }

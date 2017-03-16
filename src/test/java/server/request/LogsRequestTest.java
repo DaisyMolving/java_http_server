@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 public class LogsRequestTest {
 
-
     @Test
     public void ifCredentialsAreValidStatusCodeIs200() throws IOException {
         RequestLogStore requestLogStore = new RequestLogStore();

@@ -2,7 +2,6 @@ package server.request;
 
 import server.Response;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

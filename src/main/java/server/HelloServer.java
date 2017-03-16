@@ -16,12 +16,15 @@ public class HelloServer {
     private RequestLogStore requestLogStore = new RequestLogStore();
 
     public void start(String[] args){
+
         int portNumber = Integer.parseInt(args[1]);
         bindServerSocketToPort(portNumber);
+
         while(running()){
             Socket clientSocket = acceptConnectionFromClient(serverSocket);
             threadPool.execute(new RequestResponseProcess(clientSocket, router, dataStore, cookieStore, requestLogStore));
         }
+
         threadPool.shutdown();
     }
 
