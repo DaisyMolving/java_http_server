@@ -30,7 +30,6 @@ public class ParameterHandlerTest {
     public void takesURLParametersFromPath() {
         ParameterHandler parameterHandlerGet = new ParameterHandler(setParameters("GET", "HTTP/1.1", "/parameters?this=fivehundred&SEVENTY\"?\""));
         assertEquals("this=fivehundred&SEVENTY\"?\"", parameterHandlerGet.getURLParametersFromPath("/parameters?this=fivehundred&SEVENTY\"?\""));
-
     }
 
     private HashMap<String, String> setParameters(String method, String protocolVersion, String path) {
